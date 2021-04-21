@@ -11,6 +11,13 @@
 #if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE TypeFamilies #-}
 #endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, TypeOperators
+           , RankNTypes, QuantifiedConstraints
+           , ConstraintKinds, UndecidableInstances
+           , AllowAmbiguousTypes
+           , PolyKinds #-}
+#endif
 
 {-# OPTIONS_HADDOCK not-home #-}
 
@@ -339,6 +346,9 @@ import qualified Control.Category as Category
 #if __GLASGOW_HASKELL__ >= 709
 import Data.Coerce
 #endif
+#if __GLASGOW_HASKELL__ >= 810
+import GHC.Types (type (@@), Total)
+#endif
 
 
 -- A "Nat" is a natural machine word (an unsigned Int)
@@ -355,8 +365,6 @@ intFromNat = fromIntegral
 {--------------------------------------------------------------------
   Types
 --------------------------------------------------------------------}
-
-
 -- | A map of integers to values @a@.
 
 -- See Note: Order of constructors
@@ -499,10 +507,12 @@ instance Foldable.Foldable IntMap where
   {-# INLINABLE product #-}
 #endif
 
+
 -- | Traverses in order of increasing key.
 instance Traversable IntMap where
     traverse f = traverseWithKey (\_ -> f)
     {-# INLINE traverse #-}
+
 
 instance NFData a => NFData (IntMap a) where
     rnf Nil = ()
@@ -510,7 +520,6 @@ instance NFData a => NFData (IntMap a) where
     rnf (Bin _ _ l r) = rnf l `seq` rnf r
 
 #if __GLASGOW_HASKELL__
-
 {--------------------------------------------------------------------
   A Data instance
 --------------------------------------------------------------------}
@@ -532,7 +541,6 @@ fromListConstr = mkConstr intMapDataType "fromList" [] Prefix
 
 intMapDataType :: DataType
 intMapDataType = mkDataType "Data.IntMap.Internal.IntMap" [fromListConstr]
-
 #endif
 
 {--------------------------------------------------------------------
@@ -1411,14 +1419,17 @@ data WhenMissing f x y = WhenMissing
   , missingKey :: Key -> x -> f (Maybe y)}
 
 -- | @since 0.5.9
-instance (Applicative f, Monad f) => Functor (WhenMissing f x) where
+instance Monad f => Functor (WhenMissing f x) where
   fmap = mapWhenMissing
   {-# INLINE fmap #-}
 
 
 -- | @since 0.5.9
-instance (Applicative f, Monad f) => Category.Category (WhenMissing f)
-  where
+instance (Monad f
+#if MIN_VERSION_base(4,14,0)
+         , Total f
+#endif
+         ) => Category.Category (WhenMissing f) where
     id = preserveMissing
     f . g =
       traverseMaybeMissing $ \ k x -> do
@@ -1433,7 +1444,11 @@ instance (Applicative f, Monad f) => Category.Category (WhenMissing f)
 -- | Equivalent to @ReaderT k (ReaderT x (MaybeT f))@.
 --
 -- @since 0.5.9
-instance (Applicative f, Monad f) => Applicative (WhenMissing f x) where
+instance (Monad f
+#if MIN_VERSION_base(4,14,0)
+         , Total f
+#endif
+         ) => Applicative (WhenMissing f x) where
   pure x = mapMissing (\ _ _ -> x)
   f <*> g =
     traverseMaybeMissing $ \k x -> do
@@ -1448,7 +1463,11 @@ instance (Applicative f, Monad f) => Applicative (WhenMissing f x) where
 -- | Equivalent to @ReaderT k (ReaderT x (MaybeT f))@.
 --
 -- @since 0.5.9
-instance (Applicative f, Monad f) => Monad (WhenMissing f x) where
+instance (Monad f
+#if MIN_VERSION_base(4,14,0)
+         , Total f
+#endif
+         ) => Monad (WhenMissing f x) where
 #if !MIN_VERSION_base(4,8,0)
   return = pure
 #endif
@@ -1465,7 +1484,7 @@ instance (Applicative f, Monad f) => Monad (WhenMissing f x) where
 --
 -- @since 0.5.9
 mapWhenMissing
-  :: (Applicative f, Monad f)
+  :: Monad f
   => (a -> b)
   -> WhenMissing f x a
   -> WhenMissing f x b
@@ -1607,7 +1626,11 @@ instance (Monad f, Applicative f) => Category.Category (WhenMatched f x)
 -- | Equivalent to @ReaderT Key (ReaderT x (ReaderT y (MaybeT f)))@
 --
 -- @since 0.5.9
-instance (Monad f, Applicative f) => Applicative (WhenMatched f x y) where
+instance (Monad f, Applicative f
+#if MIN_VERSION_base(4,14,0)
+         , Total f
+#endif
+         ) => Applicative (WhenMatched f x y) where
   pure x = zipWithMatched (\_ _ _ -> x)
   fs <*> xs =
     zipWithMaybeAMatched $ \k x y -> do
@@ -1622,7 +1645,11 @@ instance (Monad f, Applicative f) => Applicative (WhenMatched f x y) where
 -- | Equivalent to @ReaderT Key (ReaderT x (ReaderT y (MaybeT f)))@
 --
 -- @since 0.5.9
-instance (Monad f, Applicative f) => Monad (WhenMatched f x y) where
+instance (Monad f, Applicative f
+#if MIN_VERSION_base(4,14,0)
+         , Total f
+#endif
+         ) => Monad (WhenMatched f x y) where
 #if !MIN_VERSION_base(4,8,0)
   return = pure
 #endif
@@ -1813,7 +1840,12 @@ filterMissing f = WhenMissing
 --
 -- @since 0.5.9
 filterAMissing
-  :: Applicative f => (Key -> x -> f Bool) -> WhenMissing f x x
+#if MIN_VERSION_base(4,14,0)
+  :: (Applicative f, f @@ (IntMap x -> IntMap x))
+#else
+  :: Applicative f
+#endif
+  => (Key -> x -> f Bool) -> WhenMissing f x x
 filterAMissing f = WhenMissing
   { missingSubtree = \m -> filterWithKeyA f m
   , missingKey     = \k x -> bool Nothing (Just x) <$> f k x }
@@ -1822,7 +1854,12 @@ filterAMissing f = WhenMissing
 
 -- | /O(n)/. Filter keys and values using an 'Applicative' predicate.
 filterWithKeyA
-  :: Applicative f => (Key -> a -> f Bool) -> IntMap a -> f (IntMap a)
+#if MIN_VERSION_base(4,14,0)
+  :: (Applicative f, f @@ (IntMap a -> IntMap a))
+#else
+  :: Applicative f
+#endif
+  => (Key -> a -> f Bool) -> IntMap a -> f (IntMap a)
 filterWithKeyA _ Nil           = pure Nil
 filterWithKeyA f t@(Tip k x)   = (\b -> if b then t else Nil) <$> f k x
 filterWithKeyA f (Bin p m l r) =
@@ -1839,7 +1876,12 @@ bool _ t True  = t
 --
 -- @since 0.5.9
 traverseMissing
-  :: Applicative f => (Key -> x -> f y) -> WhenMissing f x y
+#if MIN_VERSION_base(4,14,0)
+  :: (Applicative f, f @@ (IntMap y -> IntMap y))
+#else 
+  :: Applicative f
+#endif
+  => (Key -> x -> f y) -> WhenMissing f x y
 traverseMissing f = WhenMissing
   { missingSubtree = traverseWithKey f
   , missingKey = \k x -> Just <$> f k x }
@@ -1853,7 +1895,11 @@ traverseMissing f = WhenMissing
 --
 -- @since 0.5.9
 traverseMaybeMissing
-  :: Applicative f => (Key -> x -> f (Maybe y)) -> WhenMissing f x y
+#if MIN_VERSION_base(4,14,0)
+  :: (Applicative f, f @@ (IntMap y -> IntMap y))
+#else
+#endif
+  => (Key -> x -> f (Maybe y)) -> WhenMissing f x y
 traverseMaybeMissing f = WhenMissing
   { missingSubtree = traverseMaybeWithKey f
   , missingKey = f }
@@ -1862,7 +1908,12 @@ traverseMaybeMissing f = WhenMissing
 
 -- | /O(n)/. Traverse keys\/values and collect the 'Just' results.
 traverseMaybeWithKey
-  :: Applicative f => (Key -> a -> f (Maybe b)) -> IntMap a -> f (IntMap b)
+#if MIN_VERSION_base(4,14,0)
+ :: (Applicative f, f @@ (IntMap b -> IntMap b))
+#else
+  :: Applicative f
+#endif
+ => (Key -> a -> f (Maybe b)) -> IntMap a -> f (IntMap b)
 traverseMaybeWithKey f = go
     where
     go Nil           = pure Nil
@@ -2016,7 +2067,11 @@ merge g1 g2 f m1 m2 =
 --
 -- @since 0.5.9
 mergeA
-  :: (Applicative f)
+#if MIN_VERSION_base(4,14,0)
+  :: (Applicative f, f @@ (IntMap c -> IntMap c), f @@ (Maybe c -> IntMap c))
+#else
+  :: Applicative f
+#endif
   => WhenMissing f a c -- ^ What to do with keys in @m1@ but not @m2@
   -> WhenMissing f b c -- ^ What to do with keys in @m2@ but not @m1@
   -> WhenMatched f a b c -- ^ What to do with keys in both @m1@ and @m2@
@@ -2092,8 +2147,12 @@ mergeA
     -- | A variant of 'link_' which makes sure to execute side-effects
     -- in the right order.
     linkA
-        :: Applicative f
-        => Prefix -> f (IntMap a)
+#if MIN_VERSION_base(4,14,0)
+      :: (Applicative f, f @@ (IntMap a -> IntMap a))
+#else
+      :: Applicative f
+#endif
+      => Prefix -> f (IntMap a)
         -> Prefix -> f (IntMap a)
         -> f (IntMap a)
     linkA p1 t1 p2 t2
@@ -2450,7 +2509,11 @@ mapWithKey f t
 --
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(1, 'a'), (5, 'e')]) == Just (fromList [(1, 'b'), (5, 'f')])
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(2, 'c')])           == Nothing
-traverseWithKey :: Applicative t => (Key -> a -> t b) -> IntMap a -> t (IntMap b)
+traverseWithKey :: (Applicative t
+#if MIN_VERSION_base(4,14,0)
+                   , t @@ (IntMap b -> IntMap b)
+#endif
+                   ) => (Key -> a -> t b) -> IntMap a -> t (IntMap b)
 traverseWithKey f = go
   where
     go Nil = pure Nil

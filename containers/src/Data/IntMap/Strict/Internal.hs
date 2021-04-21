@@ -1,5 +1,8 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE BangPatterns #-}
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, TypeOperators #-}
+#endif
 
 #include "containers.h"
 
@@ -348,6 +351,9 @@ import Control.Applicative (Applicative (..), liftA2)
 import qualified Data.Foldable as Foldable
 #if !MIN_VERSION_base(4,8,0)
 import Data.Foldable (Foldable())
+#endif
+#if MIN_VERSION_base(4,14,0)
+import GHC.Types (type (@@))
 #endif
 
 {--------------------------------------------------------------------
@@ -889,7 +895,13 @@ mapWithKey f t
 --
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(1, 'a'), (5, 'e')]) == Just (fromList [(1, 'b'), (5, 'f')])
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(2, 'c')])           == Nothing
-traverseWithKey :: Applicative t => (Key -> a -> t b) -> IntMap a -> t (IntMap b)
+traverseWithKey
+#if MIN_VERSION_base(4,14,0)
+  :: (Applicative t, t @@ (IntMap b -> IntMap b))
+#else
+  :: Applicative t
+#endif
+  => (Key -> a -> t b) -> IntMap a -> t (IntMap b)
 traverseWithKey f = go
   where
     go Nil = pure Nil
@@ -899,7 +911,12 @@ traverseWithKey f = go
 
 -- | /O(n)/. Traverse keys\/values and collect the 'Just' results.
 traverseMaybeWithKey
-  :: Applicative f => (Key -> a -> f (Maybe b)) -> IntMap a -> f (IntMap b)
+#if MIN_VERSION_base(4,14,0)
+  :: (Applicative f, f @@ (IntMap b -> IntMap b))
+#else
+  :: Applicative f
+#endif
+  => (Key -> a -> f (Maybe b)) -> IntMap a -> f (IntMap b)
 traverseMaybeWithKey f = go
     where
     go Nil           = pure Nil

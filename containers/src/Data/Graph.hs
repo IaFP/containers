@@ -4,11 +4,12 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE StandaloneDeriving #-}
-# if __GLASGOW_HASKELL__ >= 710
+#if __GLASGOW_HASKELL__ >= 710
 {-# LANGUAGE Safe #-}
-# else
-{-# LANGUAGE Trustworthy #-}
-# endif
+#endif
+#endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, TypeFamilies #-}
 #endif
 
 #include "containers.h"

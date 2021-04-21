@@ -11,6 +11,9 @@
 {-# LANGUAGE RoleAnnotations #-}
 {-# LANGUAGE TypeFamilies #-}
 #endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors #-}
+#endif
 
 {-# OPTIONS_HADDOCK not-home #-}
 
@@ -351,7 +354,6 @@ instance Foldable.Foldable Set where
 
 
 #if __GLASGOW_HASKELL__
-
 {--------------------------------------------------------------------
   A Data instance
 --------------------------------------------------------------------}
@@ -373,7 +375,6 @@ fromListConstr = mkConstr setDataType "fromList" [] Prefix
 
 setDataType :: DataType
 setDataType = mkDataType "Data.Set.Internal.Set" [fromListConstr]
-
 #endif
 
 {--------------------------------------------------------------------

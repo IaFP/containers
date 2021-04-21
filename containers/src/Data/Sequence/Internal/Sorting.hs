@@ -1,4 +1,8 @@
 {-# LANGUAGE BangPatterns #-}
+{-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, TypeOperators, TypeFamilies #-}
+#endif
 
 {-# OPTIONS_HADDOCK not-home #-}
 
@@ -75,12 +79,17 @@ import Data.Sequence.Internal
         replicateA, foldDigit, foldNode, foldWithIndexDigit,
         foldWithIndexNode)
 import Utils.Containers.Internal.State (State(..), execState)
+#if __GLASGOW_HASKELL__ >= 810
+import GHC.Types (type (@@))
+#endif
+
+
 -- | \( O(n \log n) \).  'sort' sorts the specified 'Seq' by the natural
 -- ordering of its elements.  The sort is stable.  If stability is not
 -- required, 'unstableSort' can be slightly faster.
 --
 -- @since 0.3.0
-sort :: Ord a => Seq a -> Seq a
+sort :: (Ord a) => Seq a -> Seq a
 sort = sortBy compare
 
 -- | \( O(n \log n) \).  'sortBy' sorts the specified 'Seq' according to the
@@ -88,7 +97,7 @@ sort = sortBy compare
 -- 'unstableSortBy' can be slightly faster.
 --
 -- @since 0.3.0
-sortBy :: (a -> a -> Ordering) -> Seq a -> Seq a
+sortBy ::  (a -> a -> Ordering) -> Seq a -> Seq a
 sortBy cmp (Seq xs) =
     maybe
         (Seq EmptyT)
@@ -116,7 +125,7 @@ sortBy cmp (Seq xs) =
 -- @'sortOn' f@.
 --
 -- @since 0.5.11
-sortOn :: Ord b => (a -> b) -> Seq a -> Seq a
+sortOn :: (Ord b) => (a -> b) -> Seq a -> Seq a
 sortOn f (Seq xs) =
     maybe
        (Seq EmptyT)
@@ -131,7 +140,7 @@ sortOn f (Seq xs) =
 -- the file sorting.md (in this directory).
 --
 -- @since 0.3.0
-unstableSort :: Ord a => Seq a -> Seq a
+unstableSort :: (Ord a) => Seq a -> Seq a
 unstableSort = unstableSortBy compare
 
 -- | \( O(n \log n) \).  A generalization of 'unstableSort', 'unstableSortBy'
@@ -191,6 +200,11 @@ data QList e
     | QCons {-# UNPACK #-} !(Queue e)
             (QList e)
 
+#if __GLASGOW_HASKELL__ >= 810
+type instance Queue @@ e = ()
+type instance QList @@ e = ()
+#endif
+
 -- | A pairing heap tagged with the original position of elements,
 -- to allow for stable sorting.
 data IndexedQueue e =
@@ -199,6 +213,10 @@ data IQList e
     = IQNil
     | IQCons {-# UNPACK #-} !(IndexedQueue e)
              (IQList e)
+#if __GLASGOW_HASKELL__ >= 810
+type instance IndexedQueue @@ e = ()
+type instance IQList @@ e = ()
+#endif
 
 -- | A pairing heap tagged with some key for sorting elements, for use
 -- in 'unstableSortOn'.
@@ -208,6 +226,12 @@ data TQList a b
     = TQNil
     | TQCons {-# UNPACK #-} !(TaggedQueue a b)
              (TQList a b)
+#if __GLASGOW_HASKELL__ >= 810
+type instance TaggedQueue @@ e = ()
+type instance TaggedQueue e @@ a = ()
+type instance TQList @@ e = ()
+type instance TQList e @@ a = ()
+#endif
 
 -- | A pairing heap tagged with both a key and the original position
 -- of its elements, for use in 'sortOn'.
@@ -217,6 +241,13 @@ data ITQList e a
     = ITQNil
     | ITQCons {-# UNPACK #-} !(IndexedTaggedQueue e a)
               (ITQList e a)
+
+#if __GLASGOW_HASKELL__ >= 810
+type instance IndexedTaggedQueue @@ e = ()
+type instance IndexedTaggedQueue e @@ a = ()
+type instance ITQList @@ e = ()
+type instance ITQList e @@ a = ()
+#endif
 
 infixr 8 `ITQCons`, `TQCons`, `QCons`, `IQCons`
 
@@ -342,30 +373,27 @@ popMinITQ cmp (ITQ _ _ x xs) = (mergeQs xs, x)
 -- comparison function.
 ------------------------------------------------------------------------
 
-buildQ :: (b -> b -> Ordering) -> (a -> Queue b) -> FingerTree a -> Maybe (Queue b)
+buildQ ::  (b -> b -> Ordering) -> (a -> Queue b) -> FingerTree a -> Maybe (Queue b)
 buildQ cmp = foldToMaybeTree (mergeQ cmp)
 
-buildIQ
-    :: (b -> b -> Ordering)
-    -> (Int -> Elem y -> IndexedQueue b)
-    -> Int
-    -> FingerTree (Elem y)
-    -> Maybe (IndexedQueue b)
+buildIQ :: (b -> b -> Ordering)
+        -> (Int -> Elem y -> IndexedQueue b)
+        -> Int
+        -> FingerTree (Elem y)
+        -> Maybe (IndexedQueue b)
 buildIQ cmp = foldToMaybeWithIndexTree (mergeIQ cmp)
 
-buildTQ
-    :: (b -> b -> Ordering)
-    -> (a -> TaggedQueue b c)
-    -> FingerTree a
-    -> Maybe (TaggedQueue b c)
+buildTQ :: (b -> b -> Ordering)
+        -> (a -> TaggedQueue b c)
+        -> FingerTree a
+        -> Maybe (TaggedQueue b c)
 buildTQ cmp = foldToMaybeTree (mergeTQ cmp)
 
-buildITQ
-    :: (b -> b -> Ordering)
-    -> (Int -> Elem y -> IndexedTaggedQueue b c)
-    -> Int
-    -> FingerTree (Elem y)
-    -> Maybe (IndexedTaggedQueue b c)
+buildITQ :: (b -> b -> Ordering)
+         -> (Int -> Elem y -> IndexedTaggedQueue b c)
+         -> Int
+         -> FingerTree (Elem y)
+         -> Maybe (IndexedTaggedQueue b c)
 buildITQ cmp = foldToMaybeWithIndexTree (mergeITQ cmp)
 
 ------------------------------------------------------------------------
@@ -409,9 +437,8 @@ foldToMaybeWithIndexTree = foldToMaybeWithIndexTree'
   where
     {-# SPECIALISE foldToMaybeWithIndexTree' :: (b -> b -> b) -> (Int -> Elem y -> b) -> Int -> FingerTree (Elem y) -> Maybe b #-}
     {-# SPECIALISE foldToMaybeWithIndexTree' :: (b -> b -> b) -> (Int -> Node y -> b) -> Int -> FingerTree (Node y) -> Maybe b #-}
-    foldToMaybeWithIndexTree'
-        :: Sized a
-        => (b -> b -> b) -> (Int -> a -> b) -> Int -> FingerTree a -> Maybe b
+    foldToMaybeWithIndexTree' :: (Sized a)
+                              => (b -> b -> b) -> (Int -> a -> b) -> Int -> FingerTree a -> Maybe b
     foldToMaybeWithIndexTree' _ _ !_s EmptyT = Nothing
     foldToMaybeWithIndexTree' _ f s (Single xs) = Just (f s xs)
     foldToMaybeWithIndexTree' (<+>) f s (Deep _ pr m sf) =

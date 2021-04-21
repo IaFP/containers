@@ -16,6 +16,11 @@
 {-# LANGUAGE MagicHash #-}
 #endif
 
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, TypeOperators #-}
+#endif
+
+
 #include "containers.h"
 
 -----------------------------------------------------------------------------
@@ -83,6 +88,7 @@ module Data.IntMap.Merge.Strict (
     -- | The tactics described for 'merge' work for
     -- 'mergeA' as well. Furthermore, the following
     -- are available.
+
     , traverseMaybeMissing
     , traverseMissing
     , filterAMissing
@@ -116,6 +122,9 @@ import Data.IntMap.Strict.Internal
 import Control.Applicative (Applicative (..), (<$>))
 #endif
 import Prelude hiding (filter, map, foldl, foldr)
+#if MIN_VERSION_base(4,14,0)
+import GHC.Types (Total)
+#endif
 
 -- | Map covariantly over a @'WhenMissing' f k x@.
 mapWhenMissing :: Functor f => (a -> b) -> WhenMissing f x a -> WhenMissing f x b
@@ -212,16 +221,22 @@ mapMissing f = WhenMissing
 -- optionally producing values to put in the result.
 -- This is the most powerful 'WhenMissing' tactic, but others are usually
 -- more efficient.
-traverseMaybeMissing :: Applicative f
-                     => (Key -> x -> f (Maybe y)) -> WhenMissing f x y
+traverseMaybeMissing :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                        , Total f
+#endif
+                        )  => (Key -> x -> f (Maybe y)) -> WhenMissing f x y
 traverseMaybeMissing f = WhenMissing
   { missingSubtree = traverseMaybeWithKey f
   , missingKey = \k x -> forceMaybe <$> f k x }
 {-# INLINE traverseMaybeMissing #-}
 
 -- | Traverse over the entries whose keys are missing from the other map.
-traverseMissing :: Applicative f
-                     => (Key -> x -> f y) -> WhenMissing f x y
+traverseMissing :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                   , Total f
+#endif
+                   ) => (Key -> x -> f y) -> WhenMissing f x y
 traverseMissing f = WhenMissing
   { missingSubtree = traverseWithKey f
   , missingKey = \k x -> (Just $!) <$> f k x }

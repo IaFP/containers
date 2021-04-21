@@ -21,3 +21,4 @@ cabal.sandbox.config
 /benchmarks/SetOperations/bench-*
 /result
 /TAGS
+*.hs.bak

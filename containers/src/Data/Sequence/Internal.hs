@@ -15,6 +15,9 @@
 {-# LANGUAGE ViewPatterns #-}
 #endif
 {-# LANGUAGE PatternGuards #-}
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, TypeOperators #-}
+#endif
 
 {-# OPTIONS_HADDOCK not-home #-}
 
@@ -254,6 +257,9 @@ import Data.Functor.Identity (Identity(..))
 #if !MIN_VERSION_base(4,8,0)
 import Data.Word (Word)
 #endif
+#if MIN_VERSION_base(4,14,0)
+import GHC.Types (type (@@), Total)
+#endif
 
 import Utils.Containers.Internal.StrictPair (StrictPair (..), toPair)
 import Control.Monad.Zip (MonadZip (..))
@@ -424,7 +430,11 @@ instance Traversable Seq where
             (traverseDigitE f' sf')
       where
         traverseTree
-            :: Applicative f
+            :: (Applicative f
+#if MIN_VERSION_base(4,10,0)
+               , Total f
+#endif
+               )
             => (Node a -> f (Node b))
             -> FingerTree (Node a)
             -> f (FingerTree (Node b))
@@ -437,8 +447,11 @@ instance Traversable Seq where
                 (traverseTree (traverseNodeN f) m)
                 (traverseDigitN f sf)
         traverseDigitE
-            :: Applicative f
-            => (a -> f b) -> Digit (Elem a) -> f (Digit (Elem b))
+            :: (Applicative f
+#if MIN_VERSION_base(4,10,0)
+               , Total f
+#endif
+               ) => (a -> f b) -> Digit (Elem a) -> f (Digit (Elem b))
         traverseDigitE f (One (Elem a)) =
             (\a' -> One (Elem a')) <$>
             f a
@@ -462,11 +475,14 @@ instance Traversable Seq where
                 (f c) <*> 
                 (f d)
         traverseDigitN
-            :: Applicative f
-            => (Node a -> f (Node b)) -> Digit (Node a) -> f (Digit (Node b))
+            :: (Applicative f
+#if MIN_VERSION_base(4,10,0)
+               , Total f
+#endif
+               ) => (Node a -> f (Node b)) -> Digit (Node a) -> f (Digit (Node b))
         traverseDigitN f t = traverse f t
         traverseNodeE
-            :: Applicative f
+            :: (Applicative f, Total f)
             => (a -> f b) -> Node (Elem a) -> f (Node (Elem b))
         traverseNodeE f (Node2 s (Elem a) (Elem b)) =
             liftA2
@@ -481,8 +497,11 @@ instance Traversable Seq where
                 (f b)
                 (f c)
         traverseNodeN
-            :: Applicative f
-            => (Node a -> f (Node b)) -> Node (Node a) -> f (Node (Node b))
+            :: (Applicative f
+#if MIN_VERSION_base(4,10,0)
+               , Total f
+#endif
+               )  => (Node a -> f (Node b)) -> Node (Node a) -> f (Node (Node b))
         traverseNodeN f t = traverse f t
 
 instance NFData a => NFData (Seq a) where
@@ -932,6 +951,10 @@ data FingerTree a
 #ifdef TESTING
     deriving Show
 #endif
+#if MIN_VERSION_base(4,14,0)
+instance (Total FingerTree)
+#endif
+
 
 #ifdef __GLASGOW_HASKELL__
 -- | @since 0.6.1
@@ -1092,6 +1115,7 @@ instance Traversable FingerTree where
         liftA3 (Deep v) (traverse f pr) (traverse (traverse f) m)
             (traverse f sf)
 
+
 instance NFData a => NFData (FingerTree a) where
     rnf EmptyT = ()
     rnf (Single x) = rnf x
@@ -1189,6 +1213,7 @@ instance Traversable Digit where
     traverse f (Two a b) = liftA2 Two (f a) (f b)
     traverse f (Three a b c) = liftA3 Three (f a) (f b) (f c)
     traverse f (Four a b c d) = liftA3 Four (f a) (f b) (f c) <*> f d
+
 
 instance NFData a => NFData (Digit a) where
     rnf (One a) = rnf a
@@ -1354,7 +1379,13 @@ instance Applicative Identity where
 {-# SPECIALIZE applicativeTree :: Int -> Int -> Identity a -> Identity (FingerTree a) #-}
 -- Special note: the Identity specialization automatically does node sharing,
 -- reducing memory usage of the resulting tree to /O(log n)/.
-applicativeTree :: Applicative f => Int -> Int -> f a -> f (FingerTree a)
+applicativeTree :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                   , Total f
+#else
+#endif
+                   ) => Int -> Int -> f a -> f (FingerTree a)
+
 applicativeTree n !mSize m = case n of
     0 -> pure EmptyT
     1 -> fmap Single m
@@ -1398,7 +1429,13 @@ replicate n x
 -- \( O(\log n) \) calls to 'liftA2' and 'pure'.
 --
 -- > replicateA n x = sequenceA (replicate n x)
-replicateA :: Applicative f => Int -> f a -> f (Seq a)
+replicateA ::
+  (Applicative f
+#if MIN_VERSION_base(4,14,0)
+  , Total f
+#else
+#endif
+  ) => Int -> f a -> f (Seq a)
 replicateA n x
   | n >= 0      = Seq <$> applicativeTree n 1 (Elem <$> x)
   | otherwise   = error "replicateA takes a nonnegative integer argument"
@@ -1411,7 +1448,12 @@ replicateA n x
 -- For @base >= 4.8.0@ and @containers >= 0.5.11@, 'replicateM'
 -- is a synonym for 'replicateA'.
 #if MIN_VERSION_base(4,8,0)
-replicateM :: Applicative m => Int -> m a -> m (Seq a)
+replicateM :: (Applicative m
+#if MIN_VERSION_base(4,14,0)
+              , Total m
+#else
+#endif
+              ) => Int -> m a -> m (Seq a)
 replicateM = replicateA
 #else
 replicateM :: Monad m => Int -> m a -> m (Seq a)
@@ -1872,6 +1914,8 @@ data ViewL a
     deriving (Eq, Ord, Show, Read)
 
 #ifdef __GLASGOW_HASKELL__
+#if MIN_VERSION_base(4,14,0)
+#else
 deriving instance Data a => Data (ViewL a)
 
 -- | @since 0.5.8
@@ -1879,6 +1923,7 @@ deriving instance Generic1 ViewL
 
 -- | @since 0.5.8
 deriving instance Generic (ViewL a)
+#endif
 #endif
 
 INSTANCE_TYPEABLE1(ViewL)
@@ -1937,7 +1982,11 @@ data ViewR a
     deriving (Eq, Ord, Show, Read)
 
 #ifdef __GLASGOW_HASKELL__
+
+#if MIN_VERSION_base(4,14,0)
+#else
 deriving instance Data a => Data (ViewR a)
+#endif
 
 -- | @since 0.5.8
 deriving instance Generic1 ViewR
@@ -2008,7 +2057,6 @@ viewRTree (Deep s pr m (Four w x y z)) =
 --
 -- wasserman.louis@gmail.com, 5/23/09
 ------------------------------------------------------------------------
-
 -- | 'scanl' is similar to 'foldl', but returns a sequence of reduced
 -- values from the left:
 --
@@ -2898,18 +2946,27 @@ foldMapWithIndex f' (Seq xs') = foldMapWithIndexTreeE (lift_elem f') 0 xs'
 {-# INLINABLE foldMapWithIndex #-}
 #endif
 
+
 -- | 'traverseWithIndex' is a version of 'traverse' that also offers
 -- access to the index of each element.
 --
 -- @since 0.5.8
-traverseWithIndex :: Applicative f => (Int -> a -> f b) -> Seq a -> f (Seq b)
+traverseWithIndex ::  (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                      , Total f -- f @@ FingerTree (Elem b), f @@ (Elem b)
+#endif
+                      ) => (Int -> a -> f b) -> Seq a -> f (Seq b)
 traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> Elem <$> f' s a) 0 xs'
  where
 -- We have to specialize these functions by hand, unfortunately, because
 -- GHC does not specialize until *all* instances are determined.
 -- Although the Sized instance is known at compile time, the Applicative
 -- instance generally is not.
-  traverseWithIndexTreeE :: Applicative f => (Int -> Elem a -> f b) -> Int -> FingerTree (Elem a) -> f (FingerTree b)
+  traverseWithIndexTreeE :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                            , Total f
+#endif
+                            ) => (Int -> Elem a -> f b) -> Int -> FingerTree (Elem a) -> f (FingerTree b)
   traverseWithIndexTreeE _ !_s EmptyT = pure EmptyT
   traverseWithIndexTreeE f s (Single xs) = Single <$> f s xs
   traverseWithIndexTreeE f s (Deep n pr m sf) =
@@ -2921,7 +2978,12 @@ traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> 
       !sPspr = s + size pr
       !sPsprm = sPspr + size m
 
-  traverseWithIndexTreeN :: Applicative f => (Int -> Node a -> f b) -> Int -> FingerTree (Node a) -> f (FingerTree b)
+  traverseWithIndexTreeN :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                            , Total f
+#endif
+                            )
+                         => (Int -> Node a -> f b) -> Int -> FingerTree (Node a) -> f (FingerTree b)
   traverseWithIndexTreeN _ !_s EmptyT = pure EmptyT
   traverseWithIndexTreeN f s (Single xs) = Single <$> f s xs
   traverseWithIndexTreeN f s (Deep n pr m sf) =
@@ -2933,14 +2995,29 @@ traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> 
       !sPspr = s + size pr
       !sPsprm = sPspr + size m
 
-  traverseWithIndexDigitE :: Applicative f => (Int -> Elem a -> f b) -> Int -> Digit (Elem a) -> f (Digit b)
+  traverseWithIndexDigitE :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                             , f @@ (b -> Digit b) , f @@ (b -> b -> Digit b), f @@ (b -> b -> b -> Digit b)
+#endif
+                             )
+                          => (Int -> Elem a -> f b) -> Int -> Digit (Elem a) -> f (Digit b)
   traverseWithIndexDigitE f i t = traverseWithIndexDigit f i t
 
-  traverseWithIndexDigitN :: Applicative f => (Int -> Node a -> f b) -> Int -> Digit (Node a) -> f (Digit b)
+  traverseWithIndexDigitN :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                             , f @@ (b -> Digit b), f @@ (b -> b -> Digit b) , f @@ (b -> b -> b -> Digit b)
+#endif
+                             )
+                          => (Int -> Node a -> f b) -> Int -> Digit (Node a) -> f (Digit b)
   traverseWithIndexDigitN f i t = traverseWithIndexDigit f i t
 
   {-# INLINE traverseWithIndexDigit #-}
-  traverseWithIndexDigit :: (Applicative f, Sized a) => (Int -> a -> f b) -> Int -> Digit a -> f (Digit b)
+  traverseWithIndexDigit :: (Applicative f, Sized a
+#if MIN_VERSION_base(4,14,0)
+                            , f @@ (b -> b -> b -> Digit b), f @@ (b -> b -> Digit b), f @@ (b -> Digit b)
+#endif
+                            )
+    => (Int -> a -> f b) -> Int -> Digit a -> f (Digit b)
   traverseWithIndexDigit f !s (One a) = One <$> f s a
   traverseWithIndexDigit f s (Two a b) = liftA2 Two (f s a) (f sPsa b)
     where
@@ -2957,14 +3034,30 @@ traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> 
       !sPsab = sPsa + size b
       !sPsabc = sPsab + size c
 
-  traverseWithIndexNodeE :: Applicative f => (Int -> Elem a -> f b) -> Int -> Node (Elem a) -> f (Node b)
+  traverseWithIndexNodeE :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                            , f @@ (b -> b -> Node b), f @@ (b -> Node b)
+#endif
+                            )
+
+                         => (Int -> Elem a -> f b) -> Int -> Node (Elem a) -> f (Node b)
   traverseWithIndexNodeE f i t = traverseWithIndexNode f i t
 
-  traverseWithIndexNodeN :: Applicative f => (Int -> Node a -> f b) -> Int -> Node (Node a) -> f (Node b)
+  traverseWithIndexNodeN :: (Applicative f
+#if MIN_VERSION_base(4,14,0)
+                            , f @@ (b -> Node b), f @@ (b -> b -> Node b)
+#endif
+                            )
+                         => (Int -> Node a -> f b) -> Int -> Node (Node a) -> f (Node b)
   traverseWithIndexNodeN f i t = traverseWithIndexNode f i t
 
   {-# INLINE traverseWithIndexNode #-}
-  traverseWithIndexNode :: (Applicative f, Sized a) => (Int -> a -> f b) -> Int -> Node a -> f (Node b)
+  traverseWithIndexNode :: (Applicative f, Sized a
+#if MIN_VERSION_base(4,14,0)
+                           , f @@ (b -> b -> Node b), f @@ (b -> Node b)
+#endif
+                           )
+    => (Int -> a -> f b) -> Int -> Node a -> f (Node b)
   traverseWithIndexNode f !s (Node2 ns a b) = liftA2 (Node2 ns) (f s a) (f sPsa b)
     where
       !sPsa = s + size a
@@ -2989,6 +3082,7 @@ traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> 
   traverseWithIndex (\k a -> f k (g a)) xs
  #-}
 #endif
+
 {-
 It might be nice to be able to rewrite
 

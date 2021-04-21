@@ -3,6 +3,10 @@
 #if defined(__GLASGOW_HASKELL__)
 {-# LANGUAGE Trustworthy #-}
 #endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors, TypeOperators #-}
+#endif
+
 {-# OPTIONS_HADDOCK not-home #-}
 
 #include "containers.h"
@@ -430,6 +434,9 @@ import Data.Functor.Identity (Identity (..))
 import qualified Data.Foldable as Foldable
 #if !MIN_VERSION_base(4,8,0)
 import Data.Foldable (Foldable())
+#endif
+#if MIN_VERSION_base(4,14,0)
+import GHC.Types (type (@@))
 #endif
 
 -- $strictness
@@ -1180,16 +1187,26 @@ mapMissing f = WhenMissing
 -- optionally producing values to put in the result.
 -- This is the most powerful 'WhenMissing' tactic, but others are usually
 -- more efficient.
-traverseMaybeMissing :: Applicative f
-                     => (k -> x -> f (Maybe y)) -> WhenMissing f k x y
+traverseMaybeMissing ::
+#if MIN_VERSION_base(4,14,0)
+  (Applicative f, f @@ (Maybe y -> Map k y -> Map k y), f @@ (Map k y -> Map k y))
+#else
+  Applicative f
+#endif
+  => (k -> x -> f (Maybe y)) -> WhenMissing f k x y
 traverseMaybeMissing f = WhenMissing
   { missingSubtree = traverseMaybeWithKey f
   , missingKey = \k x -> forceMaybe <$> f k x }
 {-# INLINE traverseMaybeMissing #-}
 
 -- | Traverse over the entries whose keys are missing from the other map.
-traverseMissing :: Applicative f
-                     => (k -> x -> f y) -> WhenMissing f k x y
+traverseMissing ::
+#if MIN_VERSION_base(4,14,0)
+  (Applicative f, f @@ (y -> Map k y -> Map k y), f @@ (Map k y -> Map k y))
+#else
+  Applicative f
+#endif
+  => (k -> x -> f y) -> WhenMissing f k x y
 traverseMissing f = WhenMissing
   { missingSubtree = traverseWithKey f
   , missingKey = \k x -> (Just $!) <$> f k x }
@@ -1289,8 +1306,13 @@ mapMaybeWithKey f (Bin _ kx x l r) = case f kx x of
 --
 -- @since 0.5.8
 
-traverseMaybeWithKey :: Applicative f
-                     => (k -> a -> f (Maybe b)) -> Map k a -> f (Map k b)
+traverseMaybeWithKey ::
+#if MIN_VERSION_base(4,14,0)
+  (Applicative f, f @@ (Map k b -> Map k b), f @@ (Maybe b -> Map k b -> Map k b))
+#else
+  Applicative f
+#endif
+  => (k -> a -> f (Maybe b)) -> Map k a -> f (Map k b)
 traverseMaybeWithKey = go
   where
     go _ Tip = pure Tip
@@ -1394,7 +1416,13 @@ mapWithKey f (Bin sx kx x l r) =
 --
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(1, 'a'), (5, 'e')]) == Just (fromList [(1, 'b'), (5, 'f')])
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(2, 'c')])           == Nothing
-traverseWithKey :: Applicative t => (k -> a -> t b) -> Map k a -> t (Map k b)
+traverseWithKey ::
+#if MIN_VERSION_base(4,14,0)
+  (Applicative t, t @@ (Map k b -> Map k b), t @@ (b -> Map k b -> Map k b))
+#else
+  Applicative t
+#endif
+  => (k -> a -> t b) -> Map k a -> t (Map k b)
 traverseWithKey f = go
   where
     go Tip = pure Tip

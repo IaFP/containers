@@ -9,6 +9,9 @@
 #if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE TypeFamilies #-}
 #endif
+#if __GLASGOW_HASKELL__ >= 810
+{-# LANGUAGE PartialTypeConstructors #-}
+#endif
 
 {-# OPTIONS_HADDOCK not-home #-}
 
@@ -292,8 +295,7 @@ instance Semigroup IntSet where
     stimes  = stimesIdempotentMonoid
 #endif
 
-#if __GLASGOW_HASKELL__
-
+#if __GLASGOW_HASKELL__ 
 {--------------------------------------------------------------------
   A Data instance
 --------------------------------------------------------------------}
@@ -314,7 +316,6 @@ fromListConstr = mkConstr intSetDataType "fromList" [] Prefix
 
 intSetDataType :: DataType
 intSetDataType = mkDataType "Data.IntSet.Internal.IntSet" [fromListConstr]
-
 #endif
 
 {--------------------------------------------------------------------
