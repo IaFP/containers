@@ -389,6 +389,11 @@ data IntMap a = Bin {-# UNPACK #-} !Prefix
 type Prefix = Int
 type Mask   = Int
 
+#if __GLASGOW_HASKELL__ >= 810
+instance Total IntMap
+#endif
+
+
 
 -- Some stuff from "Data.IntSet.Internal", for 'restrictKeys' and
 -- 'withoutKeys' to use.
@@ -1417,6 +1422,9 @@ mergeWithKey' bin' f g1 g2 = go
 data WhenMissing f x y = WhenMissing
   { missingSubtree :: IntMap x -> f (IntMap y)
   , missingKey :: Key -> x -> f (Maybe y)}
+#if MIN_VERSION_base(4,14,0)
+instance Total (WhenMissing f x)
+#endif
 
 -- | @since 0.5.9
 instance Monad f => Functor (WhenMissing f x) where
@@ -1581,8 +1589,11 @@ type SimpleWhenMissing = WhenMissing Identity
 -- of a function of type @Key -> x -> y -> f (Maybe z)@.
 --
 -- @since 0.5.9
-newtype WhenMatched f x y z = WhenMatched
+data WhenMatched f x y z = WhenMatched
   { matchedKey :: Key -> x -> y -> f (Maybe z) }
+#if MIN_VERSION_base(4,14,0)
+instance Total (WhenMatched f x y)
+#endif
 
 
 -- | Along with zipWithMaybeAMatched, witnesses the isomorphism

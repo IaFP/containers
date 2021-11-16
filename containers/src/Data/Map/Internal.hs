@@ -487,6 +487,9 @@ type Size     = Int
 #if __GLASGOW_HASKELL__ >= 708
 type role Map nominal representational
 #endif
+#if __GLASGOW_HASKELL__ >= 810
+instance Total (Map k)
+#endif
 
 instance (Ord k) => Monoid (Map k v) where
     mempty  = empty
@@ -2118,6 +2121,9 @@ instance Applicative Identity where
 data WhenMissing f k x y = WhenMissing
   { missingSubtree :: Map k x -> f (Map k y)
   , missingKey :: k -> x -> f (Maybe y)}
+#if MIN_VERSION_base(4,14,0)
+instance Total (WhenMissing f k x)
+#endif
 
 -- | @since 0.5.9
 instance (Applicative f, Monad f) => Functor (WhenMissing f k x) where
@@ -2250,8 +2256,11 @@ type SimpleWhenMissing = WhenMissing Identity
 -- of a function of type @ k -> x -> y -> f (Maybe z) @.
 --
 -- @since 0.5.9
-newtype WhenMatched f k x y z = WhenMatched
+data WhenMatched f k x y z = WhenMatched
   { matchedKey :: k -> x -> y -> f (Maybe z) }
+#if MIN_VERSION_base(4,14,0)
+instance Total (WhenMatched f k x y)
+#endif
 
 -- | Along with zipWithMaybeAMatched, witnesses the isomorphism between
 -- @WhenMatched f k x y z@ and @k -> x -> y -> f (Maybe z)@.

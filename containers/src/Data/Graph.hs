@@ -4,8 +4,10 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE StandaloneDeriving #-}
-#if __GLASGOW_HASKELL__ >= 710
+#if __GLASGOW_HASKELL__ >= 710 && __GLASGOW_HASKELL__ < 810
 {-# LANGUAGE Safe #-}
+#else
+{-# LANGUAGE Trustworthy #-}
 #endif
 #endif
 #if __GLASGOW_HASKELL__ >= 810
@@ -133,6 +135,9 @@ import Data.Semigroup (Semigroup (..))
 import GHC.Generics (Generic, Generic1)
 import Data.Data (Data)
 import Data.Typeable
+#endif
+#if MIN_VERSION_base(4,14,0)
+import GHC.Types (Total)
 #endif
 
 -- Make sure we don't use Integer by mistake.
@@ -509,6 +514,9 @@ chop (Node v ts : us)
 newtype SetM s a = SetM { runSetM :: STUArray s Vertex Bool -> ST s a }
 #else
 newtype SetM s a = SetM { runSetM :: STArray  s Vertex Bool -> ST s a }
+#endif
+#if MIN_VERSION_base(4,14,0)
+instance Total (SetM s)
 #endif
 
 instance Monad (SetM s) where

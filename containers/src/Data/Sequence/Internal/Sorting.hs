@@ -80,7 +80,7 @@ import Data.Sequence.Internal
         foldWithIndexNode)
 import Utils.Containers.Internal.State (State(..), execState)
 #if __GLASGOW_HASKELL__ >= 810
-import GHC.Types (type (@@))
+import GHC.Types (type (@@), Total)
 #endif
 
 
@@ -203,6 +203,8 @@ data QList e
 #if __GLASGOW_HASKELL__ >= 810
 type instance Queue @@ e = ()
 type instance QList @@ e = ()
+instance Total Queue
+instance Total QList
 #endif
 
 -- | A pairing heap tagged with the original position of elements,

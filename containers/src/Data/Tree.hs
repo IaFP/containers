@@ -101,24 +101,30 @@ import GHC.Types (type (@@), Total)
 -- | Non-empty, possibly infinite, multi-way trees; also known as /rose trees/.
 data Tree a = Node {
         rootLabel :: a,         -- ^ label value
-        subForest :: Forest a   -- ^ zero or more child trees
+        subForest :: [Tree a]   -- ^ zero or more child trees
     }
 #ifdef __GLASGOW_HASKELL__
   deriving ( Eq
            , Read
            , Show
-           , Data
-           , Generic  -- ^ @since 0.5.8
-           , Generic1 -- ^ @since 0.5.8
+           -- , Data
+           -- , Generic  -- ^ @since 0.5.8
+           -- , Generic1 -- ^ @since 0.5.8
            )
+deriving instance (Data a, Typeable a) => Data (Tree a)
+deriving instance Generic1 Tree
+deriving instance Generic (Tree a)
 #else
   deriving (Eq, Read, Show)
 #endif
 
 type Forest a = [Tree a]
 
+
+
 #if MIN_VERSION_base(4,14,0)
 type instance Tree @@ a = ()
+instance Total Tree
 #endif
 
 #if MIN_VERSION_base(4,9,0)
@@ -393,14 +399,22 @@ unfoldForest :: (b -> (a, [b])) -> [b] -> Forest a
 unfoldForest f = map (unfoldTree f)
 
 -- | Monadic tree builder, in depth-first order.
-unfoldTreeM :: (Monad m, Total m) => (b -> m (a, [b])) -> b -> m (Tree a)
+unfoldTreeM :: (Monad m
+#if MIN_VERSION_base(4,14,0)
+               , Total m
+#endif
+               ) => (b -> m (a, [b])) -> b -> m (Tree a)
 unfoldTreeM f b = do
     (a, bs) <- f b
     ts <- unfoldForestM f bs
     return (Node a ts)
 
 -- | Monadic forest builder, in depth-first order
-unfoldForestM :: (Monad m, Total m) => (b -> m (a, [b])) -> [b] -> m (Forest a)
+unfoldForestM :: (Monad m
+#if MIN_VERSION_base(4,14,0)
+                 , Total m
+#endif
+                 ) => (b -> m (a, [b])) -> [b] -> m (Forest a)
 unfoldForestM f = Prelude.mapM (unfoldTreeM f)
 
 -- | Monadic tree builder, in breadth-first order.

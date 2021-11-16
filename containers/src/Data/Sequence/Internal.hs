@@ -358,6 +358,9 @@ instance Sized (ForceBox a) where
 
 -- | General-purpose finite sequences.
 newtype Seq a = Seq (FingerTree (Elem a))
+#if MIN_VERSION_base(4,14,0)
+instance Total Seq
+#endif
 
 instance Functor Seq where
     fmap = fmapSeq
