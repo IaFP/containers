@@ -4,6 +4,10 @@
 {-# LANGUAGE DeriveDataTypeable, StandaloneDeriving #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE Trustworthy #-}
+#if MIN_VERSION_base(4,16,0)
+{-# LANGUAGE ExplicitNamespaces #-}
+{-# LANGUAGE QuantifiedConstraints #-}
+#endif
 #endif
 
 #include "containers.h"
@@ -88,6 +92,9 @@ import Data.Semigroup (Semigroup (..))
 
 #if !MIN_VERSION_base(4,8,0)
 import Data.Functor ((<$))
+#endif
+#if MIN_VERSION_base(4,14,0)
+import GHC.Types (type (@), Total)
 #endif
 
 -- | Non-empty, possibly infinite, multi-way trees; also known as /rose trees/.
@@ -384,14 +391,23 @@ unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree a]
 unfoldForest f = map (unfoldTree f)
 
 -- | Monadic tree builder, in depth-first order.
-unfoldTreeM :: Monad m => (b -> m (a, [b])) -> b -> m (Tree a)
+unfoldTreeM :: (
+#if MIN_VERSION_base(4,14,0)
+                Total m,
+#endif
+                Monad m) => (b -> m (a, [b])) -> b -> m (Tree a)
 unfoldTreeM f b = do
     (a, bs) <- f b
     ts <- unfoldForestM f bs
     return (Node a ts)
 
 -- | Monadic forest builder, in depth-first order
-unfoldForestM :: Monad m => (b -> m (a, [b])) -> [b] -> m ([Tree a])
+unfoldForestM :: (
+#if MIN_VERSION_base(4,14,0)
+                  Total m,
+#endif
+                  Monad m)
+              => (b -> m (a, [b])) -> [b] -> m ([Tree a])
 unfoldForestM f = Prelude.mapM (unfoldTreeM f)
 
 -- | Monadic tree builder, in breadth-first order.
@@ -400,7 +416,12 @@ unfoldForestM f = Prelude.mapM (unfoldTreeM f)
 --
 -- Implemented using an algorithm adapted from /Breadth-First Numbering: Lessons
 -- from a Small Exercise in Algorithm Design/, by Chris Okasaki, /ICFP'00/.
-unfoldTreeM_BF :: Monad m => (b -> m (a, [b])) -> b -> m (Tree a)
+unfoldTreeM_BF :: (
+#if MIN_VERSION_base(4,14,0)
+                   m @ Seq (Tree a),
+#endif
+                   Monad m)
+               => (b -> m (a, [b])) -> b -> m (Tree a)
 unfoldTreeM_BF f b = liftM getElement $ unfoldForestQ f (singleton b)
   where
     getElement xs = case viewl xs of
@@ -413,7 +434,12 @@ unfoldTreeM_BF f b = liftM getElement $ unfoldForestQ f (singleton b)
 --
 -- Implemented using an algorithm adapted from /Breadth-First Numbering: Lessons
 -- from a Small Exercise in Algorithm Design/, by Chris Okasaki, /ICFP'00/.
-unfoldForestM_BF :: Monad m => (b -> m (a, [b])) -> [b] -> m ([Tree a])
+unfoldForestM_BF :: (
+#if MIN_VERSION_base(4,14,0)
+                     m @ Seq (Tree a),
+#endif
+                     Monad m)
+                 => (b -> m (a, [b])) -> [b] -> m ([Tree a])
 unfoldForestM_BF f = liftM toList . unfoldForestQ f . fromList
 
 -- Takes a sequence (queue) of seeds and produces a sequence (reversed queue) of
