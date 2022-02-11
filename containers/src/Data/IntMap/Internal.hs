@@ -11,7 +11,7 @@
 #if __GLASGOW_HASKELL__ >= 708
 {-# LANGUAGE TypeFamilies #-}
 #endif
-{-# LANGUAGE QuantifiedConstraints #-}
+{-# LANGUAGE QuantifiedConstraints, ExplicitNamespaces, TypeOperators #-}
 
 {-# OPTIONS_HADDOCK not-home #-}
 {-# OPTIONS_GHC -fno-warn-incomplete-uni-patterns #-}
@@ -346,7 +346,7 @@ import qualified Control.Category as Category
 import Data.Coerce
 #endif
 #if MIN_VERSION_base(4,16,0)
-import GHC.Types (Total)
+import GHC.Types (Total, type (@))
 #endif
 
 
@@ -1444,7 +1444,11 @@ mergeWithKey' bin' f g1 g2 = go
 --
 -- @since 0.5.9
 
-data WhenMissing f x y = WhenMissing
+data 
+#if MIN_VERSION_base(4,16,0)
+  (f @ IntMap y, f @ Maybe y) =>
+#endif
+ WhenMissing f x y = WhenMissing
   { missingSubtree :: IntMap x -> f (IntMap y)
   , missingKey :: Key -> x -> f (Maybe y)}
 
@@ -1549,7 +1553,11 @@ mapGentlyWhenMissing f t = WhenMissing
 -- | Map covariantly over a @'WhenMatched' f k x@, using only a
 -- 'Functor f' constraint.
 mapGentlyWhenMatched
-  :: Functor f
+  :: (
+-- #if MIN_VERSION_base(4,16,0)
+--     f @ Maybe b, f @ Maybe a,
+-- #endif   
+    Functor f)
   => (a -> b)
   -> WhenMatched f x y a
   -> WhenMatched f x y b
@@ -1572,7 +1580,11 @@ lmapWhenMissing f t = WhenMissing
 --
 -- @since 0.5.9
 contramapFirstWhenMatched
-  :: (b -> a)
+  ::
+-- #if MIN_VERSION_base(4,16,0)
+--      f @ Maybe z => 
+-- #endif
+  (b -> a)
   -> WhenMatched f a y z
   -> WhenMatched f b y z
 contramapFirstWhenMatched f t =
@@ -1584,7 +1596,11 @@ contramapFirstWhenMatched f t =
 --
 -- @since 0.5.9
 contramapSecondWhenMatched
-  :: (b -> a)
+  ::
+#if MIN_VERSION_base(4,16,0)
+     f @ Maybe z => 
+#endif
+    (b -> a)
   -> WhenMatched f x a z
   -> WhenMatched f x b z
 contramapSecondWhenMatched f t =
@@ -1620,7 +1636,11 @@ type SimpleWhenMissing = WhenMissing Identity
 -- of a function of type @Key -> x -> y -> f (Maybe z)@.
 --
 -- @since 0.5.9
-newtype WhenMatched f x y z = WhenMatched
+newtype 
+#if MIN_VERSION_base(4,16,0)
+  f @ Maybe z =>
+#endif
+ WhenMatched f x y z = WhenMatched
   { matchedKey :: Key -> x -> y -> f (Maybe z) }
 
 
@@ -1709,7 +1729,11 @@ instance (
 --
 -- @since 0.5.9
 mapWhenMatched
-  :: Functor f
+  :: (
+#if MIN_VERSION_base(4,16,0)
+     f @ Maybe a, f @ Maybe b,
+#endif
+    Functor f)
   => (a -> b)
   -> WhenMatched f x y a
   -> WhenMatched f x y b
@@ -1736,7 +1760,11 @@ type SimpleWhenMatched = WhenMatched Identity
 --
 -- @since 0.5.9
 zipWithMatched
-  :: Applicative f
+  :: (
+#if MIN_VERSION_base(4,16,0)
+     Total f,
+#endif
+     Applicative f)
   => (Key -> x -> y -> z)
   -> WhenMatched f x y z
 zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
@@ -1749,7 +1777,11 @@ zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
 --
 -- @since 0.5.9
 zipWithAMatched
-  :: Applicative f
+  :: (
+#if MIN_VERSION_base(4,16,0)
+     Total f,
+#endif
+     Applicative f)
   => (Key -> x -> y -> f z)
   -> WhenMatched f x y z
 zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
@@ -1765,7 +1797,11 @@ zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
 --
 -- @since 0.5.9
 zipWithMaybeMatched
-  :: Applicative f
+  :: (
+#if MIN_VERSION_base(4,16,0)
+     Total f,
+#endif
+    Applicative f)
   => (Key -> x -> y -> Maybe z)
   -> WhenMatched f x y z
 zipWithMaybeMatched f = WhenMatched $ \ k x y -> pure $ f k x y

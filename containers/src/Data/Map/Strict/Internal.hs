@@ -5,7 +5,7 @@
 #endif
 {-# OPTIONS_HADDOCK not-home #-}
 #if MIN_VERSION_base(4,16,0)
-{-# LANGUAGE QuantifiedConstraints #-}
+{-# LANGUAGE QuantifiedConstraints, ExplicitNamespaces, TypeOperators #-}
 #endif
 
 #include "containers.h"
@@ -440,7 +440,7 @@ import Data.Foldable (Foldable())
 #endif
 
 #if MIN_VERSION_base(4,16,0)
-import GHC.Types (Total)
+import GHC.Types (Total, type (@))
 #endif
 
 -- $strictness
@@ -1107,7 +1107,11 @@ mapWhenMissing f q = WhenMissing
   , missingKey = \k x -> fmap (forceMaybe . fmap f) $ missingKey q k x}
 
 -- | Map covariantly over a @'WhenMatched' f k x y@.
-mapWhenMatched :: Functor f => (a -> b) -> WhenMatched f k x y a -> WhenMatched f k x y b
+mapWhenMatched :: (
+#if MIN_VERSION_base(4,16,0)
+          f @ Maybe a, f @ Maybe b,
+#endif
+          Functor f) => (a -> b) -> WhenMatched f k x y a -> WhenMatched f k x y b
 mapWhenMatched f q = WhenMatched
   { matchedKey = \k x y -> fmap (forceMaybe . fmap f) $ runWhenMatched q k x y }
 

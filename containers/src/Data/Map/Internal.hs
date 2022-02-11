@@ -2,7 +2,7 @@
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE PatternGuards #-}
 #if MIN_VERSION_base(4,16,0)
-{-# LANGUAGE QuantifiedConstraints #-}
+{-# LANGUAGE QuantifiedConstraints,  ExplicitNamespaces, TypeOperators #-}
 #endif
 
 #if __GLASGOW_HASKELL__
@@ -434,7 +434,7 @@ import Data.Coerce
 #endif
 
 #if MIN_VERSION_base(4,16,0)
-import GHC.Types (Total)
+import GHC.Types (Total, type (@))
 #endif
 
 {--------------------------------------------------------------------
@@ -2151,7 +2151,11 @@ instance Applicative Identity where
 --
 -- @since 0.5.9
 
-data WhenMissing f k x y = WhenMissing
+data
+#if MIN_VERSION_base(4,16,0)
+  (f @ Map k y, f @ Maybe y) =>
+#endif
+  WhenMissing f k x y = WhenMissing
   { missingSubtree :: Map k x -> f (Map k y)
   , missingKey :: k -> x -> f (Maybe y)}
 
@@ -2242,7 +2246,11 @@ mapGentlyWhenMissing f t = WhenMissing
 
 -- | Map covariantly over a @'WhenMatched' f k x@, using only a 'Functor f'
 -- constraint.
-mapGentlyWhenMatched :: Functor f
+mapGentlyWhenMatched :: (
+#if MIN_VERSION_base(4,16,0)
+    f @ Maybe b, f @ Maybe a, 
+#endif
+  Functor f)
                => (a -> b)
                -> WhenMatched f k x y a -> WhenMatched f k x y b
 mapGentlyWhenMatched f t = zipWithMaybeAMatched $
@@ -2261,7 +2269,11 @@ lmapWhenMissing f t = WhenMissing
 -- | Map contravariantly over a @'WhenMatched' f k _ y z@.
 --
 -- @since 0.5.9
-contramapFirstWhenMatched :: (b -> a)
+contramapFirstWhenMatched ::
+#if MIN_VERSION_base(4,16,0)
+    f @ Maybe z => 
+#endif
+  (b -> a)
                           -> WhenMatched f k a y z
                           -> WhenMatched f k b y z
 contramapFirstWhenMatched f t = WhenMatched $
@@ -2271,7 +2283,11 @@ contramapFirstWhenMatched f t = WhenMatched $
 -- | Map contravariantly over a @'WhenMatched' f k x _ z@.
 --
 -- @since 0.5.9
-contramapSecondWhenMatched :: (b -> a)
+contramapSecondWhenMatched ::
+#if MIN_VERSION_base(4,16,0)
+         f @ Maybe z =>  
+#endif
+  (b -> a)
                            -> WhenMatched f k x a z
                            -> WhenMatched f k x b z
 contramapSecondWhenMatched f t = WhenMatched $
@@ -2294,7 +2310,11 @@ type SimpleWhenMissing = WhenMissing Identity
 -- of a function of type @ k -> x -> y -> f (Maybe z) @.
 --
 -- @since 0.5.9
-newtype WhenMatched f k x y z = WhenMatched
+newtype
+#if MIN_VERSION_base(4,16,0)
+  f @ Maybe z =>
+#endif
+  WhenMatched f k x y z = WhenMatched
   { matchedKey :: k -> x -> y -> f (Maybe z) }
 
 -- | Along with zipWithMaybeAMatched, witnesses the isomorphism between
@@ -2372,7 +2392,11 @@ instance (
 -- | Map covariantly over a @'WhenMatched' f k x y@.
 --
 -- @since 0.5.9
-mapWhenMatched :: Functor f
+mapWhenMatched :: (
+#if MIN_VERSION_base(4,16,0)
+    f @ Maybe b, f @ Maybe a, 
+#endif
+  Functor f)
                => (a -> b)
                -> WhenMatched f k x y a
                -> WhenMatched f k x y b
@@ -2396,7 +2420,11 @@ type SimpleWhenMatched = WhenMatched Identity
 -- @
 --
 -- @since 0.5.9
-zipWithMatched :: Applicative f
+zipWithMatched :: (
+#if MIN_VERSION_base(4,16,0)
+           Total f, 
+#endif
+           Applicative f)
                => (k -> x -> y -> z)
                -> WhenMatched f k x y z
 zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
@@ -2406,7 +2434,11 @@ zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
 -- key and values to produce an action and use its result in the merged map.
 --
 -- @since 0.5.9
-zipWithAMatched :: Applicative f
+zipWithAMatched :: (
+#if MIN_VERSION_base(4,16,0)
+           Total f, 
+#endif
+           Applicative f)
                 => (k -> x -> y -> f z)
                 -> WhenMatched f k x y z
 zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
@@ -2421,7 +2453,11 @@ zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
 -- @
 --
 -- @since 0.5.9
-zipWithMaybeMatched :: Applicative f
+zipWithMaybeMatched :: (
+#if MIN_VERSION_base(4,16,0)
+           Total f, 
+#endif
+                   Applicative f)
                     => (k -> x -> y -> Maybe z)
                     -> WhenMatched f k x y z
 zipWithMaybeMatched f = WhenMatched $ \ k x y -> pure $ f k x y
