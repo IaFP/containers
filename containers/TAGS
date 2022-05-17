@@ -1,0 +1,1968 @@
+
+./Setup.hs,37
+module Main Main0,1
+main main4,5
+
+./src/Utils/Containers/Internal/StrictPair.hs,177
+module Utils.Containers.Internal.StrictPair Utils.Containers.Internal.StrictPair9,10
+data StrictPair StrictPair16,17
+data StrictPair a b = !a !a16,17
+toPair toPair21,22
+
+./src/Utils/Containers/Internal/PtrEquality.hs,347
+module Utils.Containers.Internal.PtrEquality Utils.Containers.Internal.PtrEquality8,9
+import import14,15
+ptrEq ptrEq23,24
+hetPtrEq hetPtrEq29,30
+ptrEq ptrEq33,34
+hetPtrEq hetPtrEq34,35
+ptrEq ptrEq36,37
+hetPtrEq hetPtrEq37,38
+ptrEq ptrEq42,43
+hetPtrEq hetPtrEq43,44
+infix 4 `ptrEq`ptrEq49,50
+infix 4 `hetPtrEq`hetPtrEq50,51
+
+./src/Utils/Containers/Internal/BitQueue.hs,477
+module Utils.Containers.Internal.BitQueueUtils.Containers.Internal.BitQueue36,37
+countTrailingZeros countTrailingZeros58,59
+data BitQueueB BitQueueB65,66
+data BitQueueB = BQB BQB65,66
+newtype BitQueue BitQueue68,69
+newtype BitQueue = BQ BQ68,69
+instance Show Show BitQueueB71,72
+  show show72,73
+emptyQB emptyQB78,79
+shiftQBR1 shiftQBR183,84
+snocQB snocQB92,93
+buildQ buildQ100,101
+nullQ nullQ114,115
+unconsQ unconsQ120,121
+toListQ toListQ130,131
+
+./src/Utils/Containers/Internal/State.hs,413
+module Utils.Containers.Internal.State Utils.Containers.Internal.State5,6
+newtype State State16,17
+newtype State s a = State {runState runState16,17
+instance Functor Functor (State s)18,19
+    fmap fmap19,20
+instance Monad Monad (State s)21,22
+    return return24,25
+    m m25,26
+instance Applicative Applicative (State s)28,29
+    pure pure30,31
+    (<(<*>)31,32
+execState execState33,34
+
+./src/Utils/Containers/Internal/BitUtil.hs,250
+module Utils.Containers.Internal.BitUtilUtils.Containers.Internal.BitUtil32,33
+bitcount bitcount70,71
+highestBitMask highestBitMask79,80
+shiftRL, shiftLL shiftLL98,99
+shiftRL,shiftRL98,99
+shiftLL shiftLL100,101
+wordSize wordSize103,104
+
+./src/Utils/Containers/Internal/Coercions.hs,130
+module Utils.Containers.Internal.Coercions Utils.Containers.Internal.Coercions5,6
+(.(.#)13,14
+(.(.^#)37,38
+(f(f.^#g)41,42
+
+./src/Utils/Containers/Internal/TypeError.hs,171
+module Utils.Containers.Internal.TypeError Utils.Containers.Internal.TypeError13,14
+class Whoops Whoops28,29
+instance TypeError TypeError ('Text a) => Whoops a31,32
+
+./src/Utils/Containers/Internal/StrictMaybe.hs,336
+module Utils.Containers.Internal.StrictMaybe Utils.Containers.Internal.StrictMaybe7,8
+data MaybeS MaybeS14,15
+data MaybeS a = NothingS NothingS14,15
+data MaybeS a = NothingS | JustS JustS14,15
+instance Foldable Foldable MaybeS16,17
+  foldMap foldMap17,18
+maybeS maybeS20,21
+toMaybe toMaybe24,25
+toMaybeS toMaybeS28,29
+
+./src/Data/IntMap/Merge/Lazy.hs,60
+module Data.IntMap.Merge.Lazy Data.IntMap.Merge.Lazy48,49
+
+./src/Data/IntMap/Merge/Strict.hs,517
+module Data.IntMap.Merge.Strict Data.IntMap.Merge.Strict48,49
+mapWhenMissing mapWhenMissing120,121
+mapWhenMatched mapWhenMatched126,127
+zipWithMaybeMatched zipWithMaybeMatched137,138
+zipWithMaybeAMatched zipWithMaybeAMatched149,150
+zipWithAMatched zipWithAMatched158,159
+zipWithMatched zipWithMatched172,173
+mapMaybeMissing mapMaybeMissing189,190
+mapMissing mapMissing204,205
+traverseMaybeMissing traverseMaybeMissing214,215
+traverseMissing traverseMissing222,223
+forceMaybe forceMaybe229,230
+
+./src/Data/IntMap/Internal/Debug.hs,65
+module Data.IntMap.Internal.DebugData.IntMap.Internal.Debug0,1
+
+./src/Data/IntMap/Internal/DeprecatedDebug.hs,143
+module Data.IntMap.Internal.DeprecatedDebug Data.IntMap.Internal.DeprecatedDebug2,3
+showTree showTree9,10
+showTreeWith showTreeWith14,15
+
+./src/Data/IntMap/Lazy.hs,48
+module Data.IntMap.Lazy Data.IntMap.Lazy68,69
+
+./src/Data/IntMap/Internal.hs,10491
+module Data.IntMap.Internal Data.IntMap.Internal76,77
+type Nat Nat353,354
+natFromInt natFromInt355,356
+intFromNat intFromNat359,360
+data IntMap IntMap371,372
+data IntMap a = Bin Bin371,372
+              | Tip Tip386,387
+              | NilNil387,388
+type Prefix Prefix389,390
+type Mask Mask390,391
+type IntSetPrefix IntSetPrefix395,396
+type IntSetBitMap IntSetBitMap396,397
+bitmapOf bitmapOf398,399
+(!(!)412,413
+(!(!?)423,424
+(\(\\)427,428
+m1 m1428,429
+instance Monoid Monoid (IntMap a)436,437
+    mempty mempty437,438
+    mconcat mconcat438,439
+    mappend mappend440,441
+instance Semigroup Semigroup (IntMap a)445,446
+    (<(<>)446,447
+    stimes stimes447,448
+instance Foldable.Foldable Foldable-Foldable IntMap451,452
+  fold fold452,453
+  foldr foldr459,460
+  foldl foldl461,462
+  foldMap foldMap463,464
+  foldl' foldl'470,471
+  foldr' foldr'472,473
+  length length475,476
+  null null477,478
+  toList toList479,480
+  elem elem481,482
+  maximum maximum486,487
+  minimum minimum497,498
+  sum sum508,509
+  product product510,511
+instance Traversable Traversable IntMap515,516
+    traverse traverse516,517
+instance NFData NFData a => NFData (IntMap a)519,520
+    rnf rnf520,521
+instance Data Data a => Data (IntMap a)533,534
+  gfoldl gfoldl534,535
+  toConstr toConstr535,536
+  gunfold gunfold536,537
+  dataTypeOf dataTypeOf539,540
+  dataCast1 dataCast1540,541
+fromListConstr fromListConstr542,543
+intMapDataType intMapDataType545,546
+null null558,559
+size size568,569
+member member581,582
+notMember notMember595,596
+lookup lookup601,602
+find find613,614
+findWithDefault findWithDefault633,634
+lookupLT lookupLT650,651
+lookupGT lookupGT671,672
+lookupLE lookupLE693,694
+lookupGE lookupGE715,716
+unsafeFindMin unsafeFindMin732,733
+unsafeFindMax unsafeFindMax739,740
+disjoint disjoint757,758
+compose compose795,796
+empty empty808,809
+singleton singleton818,819
+insert insert835,836
+insertWith insertWith856,857
+insertWithKey insertWithKey871,872
+insertLookupWithKey insertLookupWithKey896,897
+delete delete919,920
+adjust adjust936,937
+adjustWithKey adjustWithKey948,949
+update update968,969
+updateWithKey updateWithKey981,982
+updateLookupWithKey updateLookupWithKey1003,1004
+alter alter1022,1023
+alterF alterF1068,1069
+unions unions1087,1088
+unionsWith unionsWith1096,1097
+union union1106,1107
+unionWith unionWith1114,1115
+unionWithKey unionWithKey1123,1124
+difference difference1134,1135
+differenceWith differenceWith1144,1145
+differenceWithKey differenceWithKey1157,1158
+withoutKeys withoutKeys1170,1171
+    | k1 `IntSet.member`IntSet.member1195,1196
+withoutKeys withoutKeys1197,1198
+updatePrefix updatePrefix1202,1203
+withoutBM withoutBM1214,1215
+    | k `IntSet.member`IntSet.member1223,1224
+withoutBM withoutBM1225,1226
+intersection intersection1235,1236
+restrictKeys restrictKeys1248,1249
+    | k1 `IntSet.member`IntSet.member1273,1274
+restrictKeys restrictKeys1275,1276
+lookupPrefix lookupPrefix1280,1281
+restrictBM restrictBM1293,1294
+    | k `IntSet.member`IntSet.member1302,1303
+restrictBM restrictBM1304,1305
+intersectionWith intersectionWith1311,1312
+intersectionWithKey intersectionWithKey1320,1321
+mergeWithKey mergeWithKey1364,1365
+mergeWithKey' mergeWithKey'1383,1384
+datadata1446,1447
+instance ((Total f, Applicative f, Monad f) => Functor (WhenMissing f x)1455,1456
+  fmap fmap1460,1461
+instance ((Total f, Applicative f, Monad f) => Category-Category (WhenMissing f)1465,1466
+    id id1471,1472
+    f f1472,1473
+instance ((Total f, Applicative f, Monad f) => Applicative (WhenMissing f x)1485,1486
+  pure pure1490,1491
+  f f1491,1492
+instance ((Total f, Applicative f, Monad f) => Monad (WhenMissing f x)1504,1505
+  return return1510,1511
+  m m1512,1513
+mapWhenMissing mapWhenMissing1533,1534
+mapGentlyWhenMissing mapGentlyWhenMissing1546,1547
+mapGentlyWhenMatched mapGentlyWhenMatched1563,1564
+lmapWhenMissing lmapWhenMissing1571,1572
+contramapFirstWhenMatched contramapFirstWhenMatched1589,1590
+contramapSecondWhenMatched contramapSecondWhenMatched1605,1606
+newtype Identity Identity1611,1612
+newtype Identity a = Identity {runIdentity runIdentity1611,1612
+instance Functor Functor Identity1613,1614
+    fmap fmap1614,1615
+instance Applicative Applicative Identity1616,1617
+    pure pure1617,1618
+    Identity Identity1618,1619
+type SimpleWhenMissing SimpleWhenMissing1628,1629
+newtypenewtype1638,1639
+runWhenMatched runWhenMatched1650,1651
+runWhenMissing runWhenMissing1659,1660
+instance Functor Functor f => Functor (WhenMatched f x y)1665,1666
+  fmap fmap1666,1667
+instance ((Total f, Monad f, Applicative f) => Category-Category (WhenMatched f x)1671,1672
+    id id1677,1678
+    f f1678,1679
+instance ((Total f, Monad f, Applicative f) => Applicative (WhenMatched f x y)1691,1692
+  pure pure1696,1697
+  fs fs1697,1698
+instance ((Total f, Monad f, Applicative f) => Monad (WhenMatched f x y)1710,1711
+  return return1716,1717
+  m m1718,1719
+mapWhenMatched mapWhenMatched1739,1740
+type SimpleWhenMatched SimpleWhenMatched1750,1751
+zipWithMatched zipWithMatched1769,1770
+zipWithAMatched zipWithAMatched1786,1787
+zipWithMaybeMatched zipWithMaybeMatched1806,1807
+zipWithMaybeAMatched zipWithMaybeAMatched1820,1821
+dropMissing dropMissing1834,1835
+preserveMissing preserveMissing1851,1852
+mapMissing mapMissing1867,1868
+mapMaybeMissing mapMaybeMissing1888,1889
+filterMissing filterMissing1905,1906
+filterAMissing filterAMissing1922,1923
+filterWithKeyA filterWithKeyA1931,1932
+bool bool1938,1939
+traverseMissing traverseMissing1949,1950
+traverseMaybeMissing traverseMaybeMissing1963,1964
+traverseMaybeWithKey traverseMaybeWithKey1974,1975
+merge merge2060,2061
+mergeAmergeA2136,2137
+updateMinWithKey updateMinWithKey2237,2238
+updateMaxWithKey updateMaxWithKey2253,2254
+data View View2265,2266
+data View a = View View2265,2266
+maxViewWithKey maxViewWithKey2273,2274
+maxViewWithKeySure maxViewWithKeySure2280,2281
+minViewWithKey minViewWithKey2301,2302
+minViewWithKeySure minViewWithKeySure2313,2314
+updateMax updateMax2336,2337
+updateMin updateMin2344,2345
+maxView maxView2349,2350
+minView minView2354,2355
+deleteFindMax deleteFindMax2360,2361
+deleteFindMin deleteFindMin2366,2367
+lookupMin lookupMin2370,2371
+findMin findMin2382,2383
+lookupMax lookupMax2388,2389
+findMax findMax2400,2401
+deleteMin deleteMin2409,2410
+deleteMax deleteMax2416,2417
+isProperSubmapOf isProperSubmapOf2425,2426
+isProperSubmapOfBy isProperSubmapOfBy2445,2446
+submapCmp submapCmp2451,2452
+isSubmapOf isSubmapOf2480,2481
+isSubmapOfBy isSubmapOfBy2500,2501
+map map2521,2522
+mapWithKey mapWithKey2546,2547
+traverseWithKey traverseWithKey2572,2573
+mapAccum mapAccum2588,2589
+mapAccumWithKey mapAccumWithKey2597,2598
+mapAccumL mapAccumL2603,2604
+mapAccumRWithKey mapAccumRWithKey2620,2621
+mapKeys mapKeys2646,2647
+mapKeysWith mapKeysWith2659,2660
+mapKeysMonotonic mapKeysMonotonic2679,2680
+filter filter2692,2693
+filterWithKey filterWithKey2700,2701
+partition partition2715,2716
+partitionWithKey partitionWithKey2727,2728
+mapMaybe mapMaybe2746,2747
+mapMaybeWithKey mapMaybeWithKey2754,2755
+mapEither mapEither2771,2772
+mapEitherWithKey mapEitherWithKey2784,2785
+split split2807,2808
+data SplitLookup SplitLookup2837,2838
+data SplitLookup a = SplitLookup SplitLookup2837,2838
+mapLT mapLT2839,2840
+mapGT mapGT2843,2844
+splitLookup splitLookup2856,2857
+foldr foldr2893,2894
+foldr' foldr'2909,2910
+foldl foldl2931,2932
+foldl' foldl'2947,2948
+foldrWithKey foldrWithKey2970,2971
+foldrWithKey' foldrWithKey'2986,2987
+foldlWithKey foldlWithKey3009,3010
+foldlWithKey' foldlWithKey'3025,3026
+foldMapWithKey foldMapWithKey3045,3046
+elems elems3065,3066
+keys keys3074,3075
+assocs assocs3083,3084
+keysSet keysSet3091,3092
+fromSet fromSet3107,3108
+instance GHCExts.IsList GHCExts-IsList (IntMap a)3138,3139
+  type Item Item3139,3140
+  fromList fromList3140,3141
+  toList toList3141,3142
+toList toList3150,3151
+toAscList toAscList3158,3159
+toDescList toDescList3166,3167
+foldrFB foldrFB3173,3174
+foldlFB foldlFB3176,3177
+fromList fromList3211,3212
+fromListWith fromListWith3222,3223
+fromListWithKey fromListWithKey3232,3233
+fromAscList fromAscList3244,3245
+fromAscListWith fromAscListWith3254,3255
+fromAscListWithKey fromAscListWithKey3265,3266
+fromDistinctAscList fromDistinctAscList3275,3276
+fromMonoListWithKey fromMonoListWithKey3286,3287
+data Inserted Inserted3337,3338
+data Inserted a = Inserted Inserted3337,3338
+data Distinct Distinct3339,3340
+data Distinct = Distinct Distinct3339,3340
+data Distinct = Distinct | NondistinctNondistinct3339,3340
+instance Eq Eq a => Eq (IntMap a)3344,3345
+  t1 t13345,3346
+equal equal3348,3349
+nequal nequal3356,3357
+instance Eq1 Eq1 IntMap3366,3367
+  liftEq liftEq3367,3368
+instance Ord Ord a => Ord (IntMap a)3379,3380
+    compare compare3380,3381
+instance Ord1 Ord1 IntMap3384,3385
+  liftCompare liftCompare3385,3386
+instance Functor Functor IntMap3393,3394
+    fmap fmap3394,3395
+    a a3397,3398
+    _ _3399,3400
+instance Show Show a => Show (IntMap a)3406,3407
+  showsPrec showsPrec3407,3408
+instance Show1 Show1 IntMap3412,3413
+    liftShowsPrec liftShowsPrec3413,3414
+instance (R(Read e) => Read (IntMap e)3423,3424
+  readPrec readPrec3425,3426
+  readListPrec readListPrec3430,3431
+  readsPrec readsPrec3432,3433
+instance Read1 Read1 IntMap3440,3441
+    liftReadsPrec liftReadsPrec3441,3442
+link link3460,3461
+linkWithMask linkWithMask3465,3466
+bin bin3476,3477
+binCheckLeft binCheckLeft3483,3484
+binCheckRight binCheckRight3489,3490
+zero zero3500,3501
+nomatch,match match3505,3506
+nomatch,nomatch3505,3506
+match match3515,3516
+mask mask3522,3523
+maskW maskW3534,3535
+shorter shorter3540,3541
+branchMask branchMask3546,3547
+splitRoot splitRoot3574,3575
+showTree showTree3590,3591
+showTreeWith showTreeWith3600,3601
+showsTree showsTree3605,3606
+showsTreeHang showsTreeHang3618,3619
+showBin showBin3631,3632
+showWide showWide3635,3636
+showsBars showsBars3640,3641
+node node3646,3647
+withBar, withEmpty withEmpty3649,3650
+withBar,withBar3649,3650
+withEmpty withEmpty3651,3652
+
+./src/Data/IntMap/Strict/Internal.hs,1989
+module Data.IntMap.Strict.Internal Data.IntMap.Strict.Internal87,88
+findWithDefault findWithDefault369,370
+singleton singleton387,388
+insert insert404,405
+insertWith insertWith427,428
+insertWithKey insertWithKey445,446
+insertLookupWithKey insertLookupWithKey472,473
+adjust adjust497,498
+adjustWithKey adjustWithKey509,510
+update update530,531
+updateWithKey updateWithKey543,544
+updateLookupWithKey updateLookupWithKey567,568
+alter alter588,589
+alterF alterF636,637
+unionsWith unionsWith654,655
+unionWith unionWith662,663
+unionWithKey unionWithKey671,672
+differenceWith differenceWith685,686
+differenceWithKey differenceWithKey698,699
+intersectionWith intersectionWith710,711
+intersectionWithKey intersectionWithKey719,720
+mergeWithKey mergeWithKey763,764
+updateMinWithKey updateMinWithKey781,782
+updateMaxWithKey updateMaxWithKey797,798
+updateMax updateMax813,814
+updateMin updateMin821,822
+map map832,833
+mapWithKey mapWithKey852,853
+traverseWithKey traverseWithKey896,897
+traverseMaybeWithKey traverseMaybeWithKey911,912
+mapAccum mapAccum925,926
+mapAccumWithKey mapAccumWithKey934,935
+mapAccumL mapAccumL942,943
+mapAccumRWithKey mapAccumRWithKey961,962
+mapKeysWith mapKeysWith988,989
+mapMaybe mapMaybe999,1000
+mapMaybeWithKey mapMaybeWithKey1007,1008
+mapEither mapEither1024,1025
+mapEitherWithKey mapEitherWithKey1037,1038
+fromSet fromSet1060,1061
+fromList fromList1090,1091
+fromListWith fromListWith1101,1102
+fromListWithKey fromListWithKey1110,1111
+fromAscList fromAscList1122,1123
+fromAscListWith fromAscListWith1132,1133
+fromAscListWithKey fromAscListWithKey1142,1143
+fromDistinctAscList fromDistinctAscList1152,1153
+fromMonoListWithKey fromMonoListWithKey1163,1164
+data Inserted Inserted1214,1215
+data Inserted a = Inserted Inserted1214,1215
+data Distinct Distinct1216,1217
+data Distinct = Distinct Distinct1216,1217
+data Distinct = Distinct | NondistinctNondistinct1216,1217
+
+./src/Data/IntMap/Strict.hs,52
+module Data.IntMap.Strict Data.IntMap.Strict87,88
+
+./src/Data/Map.hs,200
+module Data.MapData.Map67,68
+insertWith' insertWith'85,86
+insertWithKey' insertWithKey'91,92
+insertLookupWithKey' insertLookupWithKey'97,98
+fold fold104,105
+foldWithKey foldWithKey110,111
+
+./src/Data/IntSet/Internal.hs,5317
+module Data.IntSet.Internal Data.IntSet.Internal102,103
+type Nat Nat238,239
+natFromInt natFromInt240,241
+intFromNat intFromNat244,245
+(\(\\)252,253
+m1 m1253,254
+data IntSet IntSet262,263
+data IntSet = Bin Bin262,263
+            | Tip Tip270,271
+            | NilNil274,275
+type Prefix Prefix281,282
+type Mask Mask282,283
+type BitMap BitMap283,284
+type Key Key284,285
+instance Monoid Monoid IntSet286,287
+    mempty mempty287,288
+    mconcat mconcat288,289
+    mappend mappend290,291
+instance Semigroup Semigroup IntSet295,296
+    (<(<>)296,297
+    stimes stimes297,298
+instance Data Data IntSet309,310
+  gfoldl gfoldl310,311
+  toConstr toConstr311,312
+  gunfold gunfold312,313
+  dataTypeOf dataTypeOf315,316
+fromListConstr fromListConstr317,318
+intSetDataType intSetDataType320,321
+null null329,330
+size size335,336
+member member345,346
+notMember notMember356,357
+lookupLT lookupLT365,366
+lookupGT lookupGT386,387
+lookupLE lookupLE408,409
+lookupGE lookupGE430,431
+unsafeFindMin unsafeFindMin448,449
+unsafeFindMax unsafeFindMax455,456
+empty empty464,465
+singleton singleton470,471
+insert insert480,481
+insertBM insertBM484,485
+delete delete496,497
+deleteBM deleteBM501,502
+alterF alterF523,524
+unions unions552,553
+union union558,559
+difference difference583,584
+intersection intersection617,618
+isProperSubsetOf isProperSubsetOf656,657
+subsetCmp subsetCmp662,663
+isSubsetOf isSubsetOf697,698
+disjoint disjoint725,726
+filter filter765,766
+partition partition778,779
+split split801,802
+splitMember splitMember832,833
+maxView maxView870,871
+minView minView882,883
+deleteFindMin deleteFindMin895,896
+deleteFindMax deleteFindMax901,902
+findMin findMin906,907
+findMax findMax917,918
+deleteMin deleteMin932,933
+deleteMax deleteMax939,940
+map map952,953
+mapMonotonic mapMonotonic968,969
+fold fold980,981
+foldr foldr990,991
+foldr' foldr'1004,1005
+foldl foldl1021,1022
+foldl' foldl'1035,1036
+elems elems1051,1052
+instance GHC.Exts.IsList GHC-Exts-IsList IntSet1060,1061
+  type Item Item1061,1062
+  fromList fromList1062,1063
+  toList toList1063,1064
+toAscList toAscList1073,1074
+toDescList toDescList1078,1079
+foldrFB foldrFB1085,1086
+foldlFB foldlFB1088,1089
+fromList fromList1112,1113
+fromAscList fromAscList1120,1121
+fromDistinctAscList fromDistinctAscList1126,1127
+fromMonoList fromMonoList1135,1136
+data Inserted Inserted1188,1189
+data Inserted = Inserted Inserted1188,1189
+instance Eq Eq IntSet1193,1194
+  t1 t11194,1195
+equal equal1197,1198
+nequal nequal1205,1206
+instance Ord Ord IntSet1217,1218
+  compare compare1218,1219
+data RelationRelation1240,1241
+  = Less Less1241,1242
+  | Prefix Prefix1242,1243
+  | Equals Equals1243,1244
+  | FlipPrefix FlipPrefix1244,1245
+  | Greater Greater1245,1246
+orderingOf orderingOf1248,1249
+relate relate1258,1259
+relateTipTip relateTipTip1281,1282
+relateBM relateBM1289,1290
+combine combine1306,1307
+combine_left combine_left1319,1320
+combine_right combine_right1332,1333
+lowerbound lowerbound1342,1343
+succUpperbound succUpperbound1350,1351
+splitSign splitSign1357,1358
+instance Show Show IntSet1372,1373
+  showsPrec showsPrec1373,1374
+instance Read Read IntSet1379,1380
+  readPrec readPrec1381,1382
+  readListPrec readListPrec1386,1387
+  readsPrec readsPrec1388,1389
+instance NFData NFData IntSet1407,1408
+instance NFData IntSet where rnf rnf1407,1408
+showTree showTree1414,1415
+showTreeWith showTreeWith1424,1425
+showsTree showsTree1429,1430
+showsTreeHang showsTreeHang1443,1444
+showBin showBin1457,1458
+showWide showWide1461,1462
+showsBars showsBars1466,1467
+showsBitMap showsBitMap1470,1471
+showBitMap showBitMap1473,1474
+node node1476,1477
+withBar, withEmpty withEmpty1479,1480
+withBar,withBar1479,1480
+withEmpty withEmpty1481,1482
+link link1490,1491
+linkWithMask linkWithMask1495,1496
+bin bin1506,1507
+tip tip1515,1516
+suffixBitMask suffixBitMask1525,1526
+prefixBitMask prefixBitMask1533,1534
+prefixOf prefixOf1537,1538
+suffixOf suffixOf1541,1542
+bitmapOfSuffix bitmapOfSuffix1545,1546
+bitmapOf bitmapOf1549,1550
+zero zero1558,1559
+nomatch,match match1563,1564
+nomatch,nomatch1563,1564
+match match1568,1569
+mask mask1574,1575
+maskW maskW1582,1583
+shorter shorter1587,1588
+branchMask branchMask1592,1593
+lowestBitSet lowestBitSet1608,1609
+highestBitSet highestBitSet1609,1610
+foldlBits foldlBits1610,1611
+foldl'Bits foldl'Bits1611,1612
+foldrBits foldrBits1612,1613
+foldr'Bits foldr'Bits1613,1614
+indexOfTheOnlyBit indexOfTheOnlyBit1623,1624
+lowestBitSet lowestBitSet1628,1629
+highestBitSet highestBitSet1630,1631
+indexOfTheOnlyBit indexOfTheOnlyBit1646,1647
+lowestBitSet lowestBitSet1665,1666
+highestBitSet highestBitSet1667,1668
+lowestBitMask lowestBitMask1671,1672
+revNat revNat1676,1677
+foldlBits foldlBits1692,1693
+foldl'Bits foldl'Bits1699,1700
+foldrBits foldrBits1705,1706
+foldr'Bits foldr'Bits1712,1713
+lowestBitSet lowestBitSet1726,1727
+highestBitSet highestBitSet1735,1736
+foldlBits foldlBits1744,1745
+foldl'Bits foldl'Bits1750,1751
+foldrBits foldrBits1756,1757
+foldr'Bits foldr'Bits1762,1763
+splitRoot splitRoot1794,1795
+
+./src/Data/Set.hs,32
+module Data.Set Data.Set66,67
+
+./src/Data/Map/Merge/Lazy.hs,54
+module Data.Map.Merge.Lazy Data.Map.Merge.Lazy48,49
+
+./src/Data/Map/Merge/Strict.hs,58
+module Data.Map.Merge.Strict Data.Map.Merge.Strict53,54
+
+./src/Data/Map/Internal/Debug.hs,439
+module Data.Map.Internal.Debug Data.Map.Internal.Debug3,4
+showTree showTree10,11
+showTreeWith showTreeWith53,54
+showsTree showsTree58,59
+showsTreeHang showsTreeHang71,72
+showWide showWide84,85
+showsBars showsBars89,90
+node node95,96
+withBar, withEmpty withEmpty98,99
+withBar,withBar98,99
+withEmpty withEmpty100,101
+valid valid110,111
+ordered ordered115,116
+balanced balanced125,126
+validsize validsize133,134
+
+./src/Data/Map/Internal/DeprecatedShowTree.hs,146
+module Data.Map.Internal.DeprecatedShowTree Data.Map.Internal.DeprecatedShowTree14,15
+showTree showTree20,21
+showTreeWith showTreeWith25,26
+
+./src/Data/Map/Lazy.hs,42
+module Data.Map.Lazy Data.Map.Lazy86,87
+
+./src/Data/Map/Internal.hs,11629
+module Data.Map.Internal Data.Map.Internal136,137
+(!(!)450,451
+(!(!?)464,465
+(\(\\)471,472
+m1 m1472,473
+data Map Map488,489
+data Map k a  = Bin Bin488,489
+              | TipTip489,490
+type Size Size491,492
+type role role494,495
+instance (O(Ord k) => Monoid (Map k v)497,498
+    mempty mempty498,499
+    mconcat mconcat499,500
+    mappend mappend501,502
+instance (O(Ord k) => Semigroup (Map k v)505,506
+    (<(<>)506,507
+    stimes stimes507,508
+instance (D(Data k, Data a, Ord k) => Data (Map k a)519,520
+  gfoldl gfoldl520,521
+  toConstr toConstr521,522
+  gunfold gunfold522,523
+  dataTypeOf dataTypeOf525,526
+  dataCast2 dataCast2526,527
+fromListConstr fromListConstr528,529
+mapDataType mapDataType531,532
+null null544,545
+size size555,556
+lookup lookup589,590
+member member607,608
+notMember notMember626,627
+find find636,637
+findWithDefault findWithDefault656,657
+lookupLT lookupLT675,676
+lookupGT lookupGT696,697
+lookupLE lookupLE718,719
+lookupGE lookupGE742,743
+empty empty768,769
+singleton singleton777,778
+insert insert795,796
+lazy lazy821,822
+insertR insertR844,845
+insertWith insertWith874,875
+insertWithR insertWithR900,901
+insertWithKey insertWithKey929,930
+insertWithKeyR insertWithKeyR949,950
+insertLookupWithKey insertLookupWithKey982,983
+delete delete1014,1015
+adjust adjust1042,1043
+adjustWithKey adjustWithKey1058,1059
+update update1083,1084
+updateWithKey updateWithKey1102,1103
+updateLookupWithKey updateLookupWithKey1130,1131
+alter alter1168,1169
+data AreWeStrict AreWeStrict1189,1190
+data AreWeStrict = Strict Strict1189,1190
+data AreWeStrict = Strict | LazyLazy1189,1190
+alterF alterF1232,1233
+atKeyImpl atKeyImpl1256,1257
+alterFCutoff alterFCutoff1282,1283
+data TraceResult TraceResult1294,1295
+data TraceResult a = TraceResult TraceResult1294,1295
+lookupTrace lookupTrace1298,1299
+insertAlong insertAlong1319,1320
+deleteAlong deleteAlong1346,1347
+bogus bogus1362,1363
+replaceAlong replaceAlong1373,1374
+atKeyIdentity atKeyIdentity1382,1383
+atKeyPlain atKeyPlain1386,1387
+data Altered Altered1418,1419
+data Altered k a = AltSmaller AltSmaller1418,1419
+data Altered k a = AltSmaller !(Map k a) | AltBigger AltBigger1418,1419
+data Altered k a = AltSmaller !(Map k a) | AltBigger !(Map k a) | AltAdj AltAdj1418,1419
+data Altered k a = AltSmaller !(Map k a) | AltBigger !(Map k a) | AltAdj !(Map k a) | AltSameAltSame1418,1419
+alterFFallback alterFFallback1426,1427
+alterFYoneda alterFYoneda1435,1436
+findIndex findIndex1467,1468
+lookupIndex lookupIndex1490,1491
+elemAt elemAt1511,1512
+take take1530,1531
+drop drop1551,1552
+splitAt splitAt1571,1572
+updateAt updateAt1600,1601
+deleteAt deleteAt1622,1623
+lookupMinSure lookupMinSure1638,1639
+lookupMin lookupMin1649,1650
+findMin findMin1658,1659
+lookupMaxSure lookupMaxSure1668,1669
+lookupMax lookupMax1679,1680
+findMax findMax1683,1684
+deleteMin deleteMin1693,1694
+deleteMax deleteMax1703,1704
+updateMin updateMin1713,1714
+updateMax updateMax1722,1723
+updateMinWithKey updateMinWithKey1732,1733
+updateMaxWithKey updateMaxWithKey1744,1745
+minViewWithKey minViewWithKey1757,1758
+maxViewWithKey maxViewWithKey1773,1774
+minView minView1788,1789
+maxView maxView1800,1801
+unions unions1816,1817
+unionsWith unionsWith1829,1830
+union union1843,1844
+unionWith unionWith1864,1865
+unionWithKey unionWithKey1886,1887
+difference difference1916,1917
+withoutKeys withoutKeys1939,1940
+differenceWith differenceWith1962,1963
+differenceWithKey differenceWithKey1978,1979
+intersection intersection1995,1996
+restrictKeys restrictKeys2020,2021
+intersectionWith intersectionWith2040,2041
+intersectionWithKey intersectionWithKey2061,2062
+disjoint disjoint2093,2094
+compose compose2122,2123
+newtype Identity Identity2129,2130
+newtype Identity a = Identity { runIdentity runIdentity2129,2130
+instance Functor Functor Identity2131,2132
+  fmap fmap2132,2133
+instance Applicative Applicative Identity2133,2134
+  (<(<*>)2134,2135
+  pure pure2135,2136
+instance Functor Functor Identity2137,2138
+  fmap fmap2138,2139
+instance Applicative Applicative Identity2139,2140
+  Identity Identity2140,2141
+  pure pure2141,2142
+datadata2153,2154
+instance ((Total f, Applicative f, Monad f) => Functor (WhenMissing f k x)2162,2163
+  fmap fmap2167,2168
+instance ((Total f, Applicative f, Monad f) => Category-Category (WhenMissing f k)2171,2172
+  id id2177,2178
+  f f2178,2179
+instance ((Total f, Applicative f, Monad f) => Applicative (WhenMissing f k x)2189,2190
+  pure pure2194,2195
+  f f2195,2196
+instance ((Total f, Applicative f, Monad f) => Monad (WhenMissing f k x)2206,2207
+  return return2212,2213
+  m m2214,2215
+mapWhenMissing mapWhenMissing2224,2225
+mapGentlyWhenMissing mapGentlyWhenMissing2238,2239
+mapGentlyWhenMatched mapGentlyWhenMatched2248,2249
+lmapWhenMissing lmapWhenMissing2262,2263
+contramapFirstWhenMatched contramapFirstWhenMatched2271,2272
+contramapSecondWhenMatched contramapSecondWhenMatched2285,2286
+type SimpleWhenMissing SimpleWhenMissing2303,2304
+newtypenewtype2312,2313
+runWhenMatched runWhenMatched2323,2324
+runWhenMissing runWhenMissing2331,2332
+instance Functor Functor f => Functor (WhenMatched f k x y)2336,2337
+  fmap fmap2337,2338
+instance ((Total f, Monad f, Applicative f) => Category-Category (WhenMatched f k x)2341,2342
+  id id2346,2347
+  f f2347,2348
+instance ((Total f, Monad f, Applicative f) => Applicative (WhenMatched f k x y)2359,2360
+  pure pure2364,2365
+  fs fs2365,2366
+instance ((Total f, Monad f, Applicative f) => Monad (WhenMatched f k x y)2376,2377
+  return return2382,2383
+  m m2384,2385
+mapWhenMatched mapWhenMatched2394,2395
+mapWhenMatched mapWhenMatched2402,2403
+type SimpleWhenMatched SimpleWhenMatched2411,2412
+zipWithMatched zipWithMatched2422,2423
+zipWithAMatched zipWithAMatched2436,2437
+zipWithMaybeMatched zipWithMaybeMatched2455,2456
+zipWithMaybeAMatched zipWithMaybeAMatched2472,2473
+dropMissing dropMissing2489,2490
+preserveMissing preserveMissing2507,2508
+preserveMissing' preserveMissing'2525,2526
+forceTree forceTree2532,2533
+mapMissing mapMissing2547,2548
+mapMaybeMissing mapMaybeMissing2566,2567
+filterMissing filterMissing2583,2584
+filterAMissing filterAMissing2601,2602
+bool bool2613,2614
+traverseMissing traverseMissing2620,2621
+traverseMaybeMissing traverseMaybeMissing2637,2638
+merge merge2718,2719
+mergeAmergeA2804,2805
+mergeWithKey mergeWithKey2860,2861
+isSubmapOf isSubmapOf2890,2891
+isSubmapOfBy isSubmapOfBy2916,2917
+submap' submap'2926,2927
+isProperSubmapOf isProperSubmapOf2947,2948
+isProperSubmapOfBy isProperSubmapOfBy2972,2973
+filter filter2988,2989
+filterWithKey filterWithKey2996,2997
+filterWithKeyA filterWithKeyA3008,3009
+takeWhileAntitone takeWhileAntitone3033,3034
+dropWhileAntitone dropWhileAntitone3050,3051
+spanAntitone spanAntitone3072,3073
+partition partition3088,3089
+partitionWithKey partitionWithKey3100,3101
+mapMaybe mapMaybe3121,3122
+mapMaybeWithKey mapMaybeWithKey3129,3130
+traverseMaybeWithKey traverseMaybeWithKey3138,3139
+mapEither mapEither3162,3163
+mapEitherWithKey mapEitherWithKey3175,3176
+map map3193,3194
+mapWithKey mapWithKey3219,3220
+traverseWithKey traverseWithKey3242,3243
+mapAccum mapAccum3260,3261
+mapAccumWithKey mapAccumWithKey3270,3271
+mapAccumL mapAccumL3276,3277
+mapAccumRWithKey mapAccumRWithKey3286,3287
+mapKeys mapKeys3305,3306
+mapKeysWith mapKeysWith3322,3323
+mapKeysMonotonic mapKeysMonotonic3347,3348
+foldr foldr3365,3366
+foldr' foldr'3375,3376
+foldl foldl3391,3392
+foldl' foldl'3401,3402
+foldrWithKey foldrWithKey3418,3419
+foldrWithKey' foldrWithKey'3428,3429
+foldlWithKey foldlWithKey3445,3446
+foldlWithKey' foldlWithKey'3455,3456
+foldMapWithKey foldMapWithKey3469,3470
+elems elems3487,3488
+keys keys3496,3497
+assocs assocs3505,3506
+keysSet keysSet3514,3515
+fromSet fromSet3524,3525
+instance (O(Ord k) => GHCExts-IsList (Map k v)3533,3534
+  type Item Item3534,3535
+  fromList fromList3535,3536
+  toList toList3536,3537
+fromList fromList3552,3553
+fromListWith fromListWith3596,3597
+fromListWithKey fromListWithKey3609,3610
+toList toList3623,3624
+toAscList toAscList3631,3632
+toDescList toDescList3639,3640
+foldrFB foldrFB3646,3647
+foldlFB foldlFB3649,3650
+fromAscList fromAscList3692,3693
+fromDescList fromDescList3721,3722
+fromAscListWith fromAscListWith3746,3747
+fromDescListWith fromDescListWith3762,3763
+fromAscListWithKey fromAscListWithKey3778,3779
+fromDescListWithKey fromDescListWithKey3805,3806
+fromDistinctAscList fromDistinctAscList3834,3835
+fromDistinctDescList fromDistinctDescList3862,3863
+filterGt filterGt3890,3891
+filterLt filterLt3900,3901
+split split3924,3925
+splitLookup splitLookup3946,3947
+splitMember splitMember3970,3971
+data StrictTriple StrictTriple3990,3991
+data StrictTriple a b c = StrictTriple StrictTriple3990,3991
+link link4017,4018
+insertMax,insertMin insertMin4027,4028
+insertMax,insertMax4027,4028
+insertMin insertMin4034,4035
+link2 link24043,4044
+glue glue4055,4056
+data MinView MinView4062,4063
+data MinView k a = MinView MinView4062,4063
+data MaxView MaxView4063,4064
+data MaxView k a = MaxView MaxView4063,4064
+minViewSure minViewSure4065,4066
+maxViewSure maxViewSure4074,4075
+deleteFindMin deleteFindMin4088,4089
+deleteFindMax deleteFindMax4098,4099
+delta,ratio ratio4136,4137
+delta,delta4136,4137
+ratio ratio4138,4139
+balance balance4171,4172
+balanceL balanceL4210,4211
+balanceR balanceR4235,4236
+bin bin4262,4263
+instance (E(Eq k, Eq a) => Eq (Map k a)4273,4274
+  t1 t14274,4275
+instance (O(Ord k, Ord v) => Ord (Map k v)4280,4281
+    compare compare4281,4282
+instance Eq2 Eq2 Map4289,4290
+    liftEq2 liftEq24290,4291
+instance Eq Eq k => Eq1 (Map k)4294,4295
+    liftEq liftEq4295,4296
+instance Ord2 Ord2 Map4298,4299
+    liftCompare2 liftCompare24299,4300
+instance Ord Ord k => Ord1 (Map k)4303,4304
+    liftCompare liftCompare4304,4305
+instance Show2 Show2 Map4307,4308
+    liftShowsPrec2 liftShowsPrec24308,4309
+instance Show Show k => Show1 (Map k)4315,4316
+    liftShowsPrec liftShowsPrec4316,4317
+instance (O(Ord k, Read k) => Read1 (Map k)4319,4320
+    liftReadsPrec liftReadsPrec4320,4321
+instance Functor Functor (Map k)4330,4331
+  fmap fmap4331,4332
+  _ _4333,4334
+  a a4334,4335
+instance Traversable Traversable (Map k)4338,4339
+  traverse traverse4339,4340
+instance Foldable.Foldable Foldable-Foldable (Map k)4343,4344
+  fold fold4344,4345
+  foldr foldr4349,4350
+  foldl foldl4351,4352
+  foldMap foldMap4353,4354
+  foldl' foldl'4358,4359
+  foldr' foldr'4360,4361
+  length length4363,4364
+  null null4365,4366
+  toList toList4367,4368
+  elem elem4369,4370
+  maximum maximum4373,4374
+  minimum minimum4380,4381
+  sum sum4387,4388
+  product product4389,4390
+instance Bifoldable Bifoldable Map4395,4396
+  bifold bifold4396,4397
+  bifoldr bifoldr4401,4402
+  bifoldl bifoldl4405,4406
+  bifoldMap bifoldMap4409,4410
+instance (N(NFData k, NFData a) => NFData (Map k a)4416,4417
+    rnf rnf4417,4418
+instance (O(Ord k, Read k, Read e) => Read (Map k e)4423,4424
+  readPrec readPrec4425,4426
+  readListPrec readListPrec4430,4431
+  readsPrec readsPrec4432,4433
+instance (S(Show k, Show a) => Show (Map k a)4441,4442
+  showsPrec showsPrec4442,4443
+splitRoot splitRoot4475,4476
+
+./src/Data/Map/Strict/Internal.hs,2538
+module Data.Map.Strict.InternalData.Map.Strict.Internal84,85
+findWithDefault findWithDefault486,487
+singleton singleton509,510
+insert insert526,527
+insertWith insertWith552,553
+insertWithR insertWithR568,569
+insertWithKey insertWithKey597,598
+insertWithKeyR insertWithKeyR616,617
+insertLookupWithKey insertLookupWithKey652,653
+adjust adjust684,685
+adjustWithKey adjustWithKey700,701
+update update726,727
+updateWithKey updateWithKey745,746
+updateLookupWithKey updateLookupWithKey773,774
+alter alter808,809
+alterF alterF868,869
+atKeyIdentity atKeyIdentity889,890
+updateAt updateAt911,912
+updateMin updateMin933,934
+updateMax updateMax942,943
+updateMinWithKey updateMinWithKey952,953
+updateMaxWithKey updateMaxWithKey964,965
+unionsWith unionsWith981,982
+unionWith unionWith995,996
+unionWithKey unionWithKey1013,1014
+differenceWith differenceWith1039,1040
+differenceWithKey differenceWithKey1054,1055
+intersectionWith intersectionWith1069,1070
+intersectionWithKey intersectionWithKey1088,1089
+mapWhenMissing mapWhenMissing1103,1104
+mapWhenMatched mapWhenMatched1109,1110
+zipWithMaybeMatched zipWithMaybeMatched1124,1125
+zipWithMaybeAMatched zipWithMaybeAMatched1136,1137
+zipWithAMatched zipWithAMatched1145,1146
+zipWithMatched zipWithMatched1159,1160
+mapMaybeMissing mapMaybeMissing1176,1177
+mapMissing mapMissing1191,1192
+traverseMaybeMissing traverseMaybeMissing1201,1202
+traverseMissing traverseMissing1213,1214
+forceMaybe forceMaybe1224,1225
+mergeWithKey mergeWithKey1267,1268
+mapMaybe mapMaybe1300,1301
+mapMaybeWithKey mapMaybeWithKey1308,1309
+traverseMaybeWithKey traverseMaybeWithKey1318,1319
+mapEither mapEither1343,1344
+mapEitherWithKey mapEitherWithKey1356,1357
+map map1374,1375
+mapWithKey mapWithKey1395,1396
+traverseWithKey traverseWithKey1427,1428
+mapAccum mapAccum1446,1447
+mapAccumWithKey mapAccumWithKey1456,1457
+mapAccumL mapAccumL1462,1463
+mapAccumRWithKey mapAccumRWithKey1472,1473
+mapKeysWith mapKeysWith1491,1492
+fromSet fromSet1507,1508
+fromList fromList1527,1528
+fromListWith fromListWith1571,1572
+fromListWithKey fromListWithKey1584,1585
+fromAscList fromAscList1612,1613
+fromDescList fromDescList1626,1627
+fromAscListWith fromAscListWith1640,1641
+fromDescListWith fromDescListWith1654,1655
+fromAscListWithKey fromAscListWithKey1670,1671
+fromDescListWithKey fromDescListWithKey1698,1699
+fromDistinctAscList fromDistinctAscList1726,1727
+fromDistinctDescList fromDistinctDescList1753,1754
+
+./src/Data/Map/Strict.hs,47
+module Data.Map.StrictData.Map.Strict101,102
+
+./src/Data/IntSet.hs,38
+module Data.IntSet Data.IntSet63,64
+
+./src/Data/Tree.hs,1662
+module Data.Tree(Data.Tree32,33
+data Tree Tree100,101
+data Tree a = Node Node100,101
+        rootLabel rootLabel101,102
+        subForest subForest102,103
+type Forest Forest119,120
+instance Eq1 Eq1 Tree123,124
+  liftEq liftEq124,125
+instance Ord1 Ord1 Tree129,130
+  liftCompare liftCompare130,131
+instance Show1 Show1 Tree135,136
+  liftShowsPrec liftShowsPrec136,137
+instance Read1 Read1 Tree142,143
+  liftReadsPrec liftReadsPrec143,144
+instance Functor Functor Tree160,161
+    fmap fmap161,162
+    x x162,163
+fmapTree fmapTree164,165
+instance Applicative Applicative Tree175,176
+    pure pure176,177
+    Node Node177,178
+    liftA2 liftA2180,181
+    Node Node183,184
+instance Monad Monad Tree188,189
+    return return189,190
+    Node Node190,191
+instance MonadFix MonadFix Tree194,195
+  mfix mfix195,196
+mfixTree mfixTree197,198
+instance Traversable Traversable Tree203,204
+    traverse traverse204,205
+instance Foldable Foldable Tree206,207
+    foldMap foldMap207,208
+    null null210,211
+    toList toList212,213
+instance NFData NFData a => NFData (Tree a)216,217
+    rnf rnf217,218
+instance MonadZip MonadZip Tree219,220
+  mzipWith mzipWith220,221
+  munzip munzip223,224
+drawTree drawTree240,241
+drawForest drawForest261,262
+draw draw264,265
+flatten flatten287,288
+levels levels304,305
+foldTree foldTree341,342
+unfoldTree unfoldTree379,380
+unfoldForest unfoldForest389,390
+unfoldTreeM unfoldTreeM393,394
+unfoldForestM unfoldForestM404,405
+unfoldTreeM_BF unfoldTreeM_BF418,419
+unfoldForestM_BF unfoldForestM_BF436,437
+unfoldForestQ unfoldForestQ446,447
+
+./src/Data/IntMap.hs,153
+module Data.IntMapData.IntMap60,61
+insertWith' insertWith'79,80
+insertWithKey' insertWithKey'85,86
+fold fold91,92
+foldWithKey foldWithKey97,98
+
+./src/Data/Containers/ListUtils.hs,427
+module Data.Containers.ListUtils Data.Containers.ListUtils23,24
+nubOrd nubOrd59,60
+nubOrdOn nubOrdOn73,74
+nubOrdOnExcluding nubOrdOnExcluding81,82
+nubOrdOnFB nubOrdOnFB105,106
+  | fx `Set.member`Set.member113,114
+constNubOn constNubOn118,119
+nubInt nubInt139,140
+nubIntOn nubIntOn154,155
+nubIntOnExcluding nubIntOnExcluding162,163
+nubIntOnFB nubIntOnFB185,186
+  | fx `IntSet.member`IntSet.member192,193
+
+./src/Data/Set/Internal.hs,5341
+module Data.Set.Internal Data.Set.Internal124,125
+(\(\\)279,280
+m1 m1280,281
+data Set Set291,292
+data Set a    = Bin Bin291,292
+              | TipTip292,293
+type Size Size294,295
+type role role297,298
+instance Ord Ord a => Monoid (Set a)300,301
+    mempty mempty301,302
+    mconcat mconcat302,303
+    mappend mappend304,305
+instance Ord Ord a => Semigroup (Set a)309,310
+    (<(<>)310,311
+    stimes stimes311,312
+instance Foldable.Foldable Foldable-Foldable Set316,317
+    fold fold317,318
+    foldr foldr322,323
+    foldl foldl324,325
+    foldMap foldMap326,327
+    foldl' foldl'331,332
+    foldr' foldr'333,334
+    length length336,337
+    null null338,339
+    toList toList340,341
+    elem elem342,343
+    minimum minimum346,347
+    maximum maximum348,349
+    sum sum350,351
+    product product352,353
+instance (D(Data a, Ord a) => Data (Set a)366,367
+  gfoldl gfoldl367,368
+  toConstr toConstr368,369
+  gunfold gunfold369,370
+  dataTypeOf dataTypeOf372,373
+  dataCast1 dataCast1373,374
+fromListConstr fromListConstr375,376
+setDataType setDataType378,379
+null null387,388
+size size393,394
+member member399,400
+notMember notMember414,415
+lookupLT lookupLT426,427
+lookupGT lookupGT446,447
+lookupLE lookupLE467,468
+lookupGE lookupGE490,491
+empty empty512,513
+singleton singleton517,518
+insert insert530,531
+lazy lazy551,552
+insertR insertR560,561
+delete delete582,583
+alterF alterF616,617
+data AlteredSet AlteredSet639,640
+    = Deleted Deleted642,643
+    | Inserted Inserted646,647
+alteredSet alteredSet648,649
+isProperSubsetOf isProperSubsetOf677,678
+isSubsetOf isSubsetOf694,695
+isSubsetOfX isSubsetOfX709,710
+disjoint disjoint754,755
+lookupMinSure lookupMinSure773,774
+lookupMin lookupMin781,782
+findMin findMin786,787
+lookupMaxSure lookupMaxSure791,792
+lookupMax lookupMax799,800
+findMax findMax804,805
+deleteMin deleteMin810,811
+deleteMax deleteMax816,817
+unions unions825,826
+union union833,834
+difference difference856,857
+intersection intersection883,884
+filter filter903,904
+partition partition917,918
+map map941,942
+mapMonotonic mapMonotonic957,958
+fold fold969,970
+foldr foldr979,980
+foldr' foldr'989,990
+foldl foldl1002,1003
+foldl' foldl'1012,1013
+elems elems1024,1025
+instance (O(Ord a) => GHCExts-IsList (Set a)1032,1033
+  type Item Item1033,1034
+  fromList fromList1034,1035
+  toList toList1035,1036
+toAscList toAscList1043,1044
+toDescList toDescList1048,1049
+foldrFB foldrFB1055,1056
+foldlFB foldlFB1058,1059
+fromList fromList1087,1088
+fromAscList fromAscList1134,1135
+fromDescList fromDescList1144,1145
+combineEq combineEq1155,1156
+fromDistinctAscList fromDistinctAscList1169,1170
+fromDistinctDescList fromDistinctDescList1193,1194
+instance Eq Eq a => Eq (Set a)1215,1216
+  t1 t11216,1217
+instance Ord Ord a => Ord (Set a)1222,1223
+    compare compare1223,1224
+instance Show Show a => Show (Set a)1228,1229
+  showsPrec showsPrec1229,1230
+instance Eq1 Eq1 Set1234,1235
+    liftEq liftEq1235,1236
+instance Ord1 Ord1 Set1239,1240
+    liftCompare liftCompare1240,1241
+instance Show1 Show1 Set1244,1245
+    liftShowsPrec liftShowsPrec1245,1246
+instance (R(Read a, Ord a) => Read (Set a)1252,1253
+  readPrec readPrec1254,1255
+  readListPrec readListPrec1259,1260
+  readsPrec readsPrec1261,1262
+instance NFData NFData a => NFData (Set a)1277,1278
+    rnf rnf1278,1279
+split split1287,1288
+splitS splitS1291,1292
+splitMember splitMember1302,1303
+findIndex findIndex1334,1335
+lookupIndex lookupIndex1359,1360
+elemAt elemAt1382,1383
+deleteAt deleteAt1403,1404
+take take1422,1423
+drop drop1443,1444
+splitAt splitAt1461,1462
+takeWhileAntitone takeWhileAntitone1488,1489
+dropWhileAntitone dropWhileAntitone1505,1506
+spanAntitone spanAntitone1527,1528
+link link1561,1562
+insertMax,insertMin insertMin1571,1572
+insertMax,insertMax1571,1572
+insertMin insertMin1578,1579
+merge merge1587,1588
+glue glue1599,1600
+deleteFindMin deleteFindMin1610,1611
+deleteFindMax deleteFindMax1618,1619
+minViewSure minViewSure1623,1624
+minView minView1633,1634
+maxViewSure maxViewSure1637,1638
+maxView maxView1647,1648
+delta,ratio ratio1684,1685
+delta,delta1684,1685
+ratio ratio1686,1687
+balanceL balanceL1727,1728
+balanceR balanceR1752,1753
+bin bin1778,1779
+splitRoot splitRoot1808,1809
+powerSet powerSet1830,1831
+cartesianProduct cartesianProduct1848,1849
+cartesianProduct cartesianProduct1867,1868
+newtype MergeSet MergeSet1876,1877
+newtype MergeSet a = MergeSet { getMergeSet getMergeSet1876,1877
+instance Semigroup Semigroup (MergeSet a)1879,1880
+  MergeSet MergeSet1880,1881
+instance Monoid Monoid (MergeSet a)1883,1884
+  mempty mempty1884,1885
+  mappend mappend1887,1888
+disjointUnion disjointUnion1904,1905
+showTree showTree1912,1913
+showTreeWith showTreeWith1952,1953
+showsTree showsTree1957,1958
+showsTreeHang showsTreeHang1970,1971
+showWide showWide1983,1984
+showsBars showsBars1988,1989
+node node1994,1995
+withBar, withEmpty withEmpty1997,1998
+withBar,withBar1997,1998
+withEmpty withEmpty1999,2000
+valid valid2005,2006
+ordered ordered2009,2010
+balanced balanced2018,2019
+validsize validsize2025,2026
+
+./src/Data/Sequence/Internal/Sorting.hs,1230
+module Data.Sequence.Internal.SortingData.Sequence.Internal.Sorting24,25
+sort sort82,83
+sortBy sortBy90,91
+sortOn sortOn118,119
+unstableSort unstableSort133,134
+unstableSortBy unstableSortBy142,143
+unstableSortOn unstableSortOn170,171
+data Queue Queue187,188
+data Queue e = Q Q187,188
+data QList QList188,189
+    = NilNil189,190
+    | QCons QCons190,191
+data IndexedQueue IndexedQueue195,196
+    IQ IQ196,197
+data IQList IQList197,198
+    = IQNilIQNil198,199
+    | IQCons IQCons199,200
+data TaggedQueue TaggedQueue204,205
+    TQ TQ205,206
+data TQList TQList206,207
+    = TQNilTQNil207,208
+    | TQCons TQCons208,209
+data IndexedTaggedQueue IndexedTaggedQueue213,214
+    ITQ ITQ214,215
+data ITQList ITQList215,216
+    = ITQNilITQNil216,217
+    | ITQCons ITQCons217,218
+mergeQ mergeQ231,232
+mergeTQ mergeTQ237,238
+mergeIQ mergeIQ247,248
+mergeITQ mergeITQ264,265
+popMinQ popMinQ291,292
+popMinIQ popMinIQ303,304
+popMinTQ popMinTQ314,315
+popMinITQ popMinITQ326,327
+buildQ buildQ344,345
+buildIQ buildIQ353,354
+buildTQ buildTQ360,361
+buildITQ buildITQ368,369
+foldToMaybeTree foldToMaybeTree387,388
+foldToMaybeWithIndexTree foldToMaybeWithIndexTree401,402
+
+./src/Data/Sequence/Internal.hs,16517
+module Data.Sequence.Internal Data.Sequence.Internal81,82
+(<(<>)284,285
+infixr 5 `consTree`consTree288,289
+infixl 5 `snocTree`snocTree289,290
+infixr 5 `appendTree0`appendTree0290,291
+pattern Empty Empty308,309
+pattern (:(315,316
+pattern x x316,317
+pattern x :<| :<|316,317
+pattern (:(324,325
+pattern xs xs325,326
+pattern xs :|> :|>325,326
+class Sized Sized330,331
+    size size331,332
+class MaybeForce MaybeForce338,339
+  maybeRwhnf maybeRwhnf339,340
+mseq mseq341,342
+($($!?)346,347
+f f347,348
+instance MaybeForce MaybeForce (Elem a)350,351
+  maybeRwhnf maybeRwhnf351,352
+instance MaybeForce MaybeForce (Node a)354,355
+  maybeRwhnf maybeRwhnf355,356
+newtype ForceBox ForceBox359,360
+instance MaybeForce MaybeForce (ForceBox a)360,361
+  maybeRwhnf maybeRwhnf361,362
+instance Sized Sized (ForceBox a)362,363
+  size size363,364
+newtype Seq Seq366,367
+instance Functor Functor Seq368,369
+    fmap fmap369,370
+    x x371,372
+fmapSeq fmapSeq374,375
+getSeq getSeq389,390
+instance Foldable Foldable Seq392,393
+    foldMap foldMap393,394
+    foldr foldr394,395
+    foldl foldl395,396
+    foldr' foldr'403,404
+    foldl' foldl'404,405
+    foldr1 foldr1411,412
+    foldl1 foldl1414,415
+    length length418,419
+    null null420,421
+instance Traversable Traversable Seq424,425
+    traverse traverse428,429
+instance NFData NFData a => NFData (Seq a)519,520
+    rnf rnf520,521
+instance Monad Monad Seq522,523
+    return return523,524
+    xs xs524,525
+    (>(>>)526,527
+instance MonadFix MonadFix Seq529,530
+    mfix mfix530,531
+mfixSeq mfixSeq535,536
+instance Applicative Applicative Seq541,542
+    pure pure542,543
+    xs xs543,544
+    (<(<*>)544,545
+    liftA2 liftA2546,547
+    xs xs548,549
+apSeq apSeq550,551
+ap2FT ap2FT583,584
+ap3FT ap3FT590,591
+lift2FT lift2FT596,597
+lift3FT lift3FT603,604
+liftA2Seq liftA2Seq610,611
+data Rigidified Rigidified637,638
+data Rigidified a = RigidEmptyRigidEmpty637,638
+                  | RigidOne RigidOne638,639
+                  | RigidTwo RigidTwo639,640
+                  | RigidThree RigidThree640,641
+                  | RigidFull RigidFull641,642
+data Rigid Rigid650,651
+data Rigid a = Rigid Rigid650,651
+data Thin Thin656,657
+data Thin a = EmptyThEmptyTh656,657
+            | SingleTh SingleTh657,658
+            | DeepTh DeepTh658,659
+data Digit12 Digit12663,664
+data Digit12 a = One12 One12663,664
+data Digit12 a = One12 a | Two12 Two12663,664
+type Digit23 Digit23670,671
+liftA2MiddleliftA2Middle753,754
+digit12ToDigit digit12ToDigit796,797
+squashL squashL801,802
+squashR squashR806,807
+mapMulFT mapMulFT818,819
+mapMulNode mapMulNode823,824
+rigidify rigidify832,833
+rigidifyRight rigidifyRight859,860
+thin thin876,877
+thin12 thin12888,889
+intersperse intersperse904,905
+instance MonadPlus MonadPlus Seq918,919
+    mzero mzero919,920
+    mplus mplus920,921
+instance Alternative Alternative Seq923,924
+    empty empty924,925
+    (<(<|>)925,926
+instance Eq Eq a => Eq (Seq a)927,928
+    xs xs928,929
+instance Ord Ord a => Ord (Seq a)930,931
+    compare compare931,932
+instance Show Show a => Show (Seq a)934,935
+    showsPrec showsPrec935,936
+instance Show Show a => Show (Seq a)937,938
+    showsPrec showsPrec938,939
+instance Show1 Show1 Seq944,945
+  liftShowsPrec liftShowsPrec945,946
+instance Eq1 Eq1 Seq949,950
+    liftEq liftEq950,951
+instance Ord1 Ord1 Seq953,954
+    liftCompare liftCompare954,955
+instance Read Read a => Read (Seq a)957,958
+    readPrec readPrec959,960
+    readListPrec readListPrec964,965
+    readsPrec readsPrec966,967
+instance Read1 Read1 Seq974,975
+  liftReadsPrec liftReadsPrec975,976
+instance Monoid Monoid (Seq a)981,982
+    mempty mempty982,983
+    mappend mappend984,985
+instance Semigroup.Semigroup Semigroup-Semigroup (Seq a)991,992
+    (<(<>)992,993
+    stimes stimes993,994
+instance Data Data a => Data (Seq a)999,1000
+    gfoldl gfoldl1000,1001
+    gunfold gunfold1004,1005
+    toConstr toConstr1009,1010
+    dataTypeOf dataTypeOf1013,1014
+    dataCast1 dataCast11015,1016
+emptyConstr, consConstr consConstr1017,1018
+emptyConstr,emptyConstr1017,1018
+consConstr consConstr1019,1020
+seqDataType seqDataType1021,1022
+data FingerTree FingerTree1027,1028
+    = EmptyTEmptyT1028,1029
+    | Single Single1029,1030
+    | Deep Deep1030,1031
+instance Sized Sized a => Sized (FingerTree a)1043,1044
+    size size1046,1047
+instance Foldable Foldable FingerTree1050,1051
+    foldMap foldMap1051,1052
+    foldr foldr1081,1082
+    foldl foldl1106,1107
+    foldr' foldr'1130,1131
+    foldl' foldl'1151,1152
+    foldr1 foldr11171,1172
+    foldl1 foldl11176,1177
+instance Functor Functor FingerTree1181,1182
+    fmap fmap1182,1183
+instance Traversable Traversable FingerTree1187,1188
+    traverse traverse1188,1189
+instance NFData NFData a => NFData (FingerTree a)1194,1195
+    rnf rnf1195,1196
+deep deep1200,1201
+pullL pullL1204,1205
+pullR pullR1210,1211
+data Digit Digit1217,1218
+    = One One1218,1219
+    | Two Two1219,1220
+    | Three Three1220,1221
+    | Four Four1221,1222
+foldDigit foldDigit1234,1235
+instance Foldable Foldable Digit1241,1242
+    foldMap foldMap1242,1243
+    foldr foldr1244,1245
+    foldl foldl1250,1251
+    foldr' foldr'1256,1257
+    foldl' foldl'1262,1263
+    foldr1 foldr11268,1269
+    foldl1 foldl11273,1274
+instance Functor Functor Digit1278,1279
+    fmap fmap1280,1281
+instance Traversable Traversable Digit1285,1286
+    traverse traverse1287,1288
+instance NFData NFData a => NFData (Digit a)1292,1293
+    rnf rnf1293,1294
+instance Sized Sized a => Sized (Digit a)1298,1299
+    size size1300,1301
+digitToTree digitToTree1304,1305
+digitToTree' digitToTree'1312,1313
+data Node Node1320,1321
+    = Node2 Node21321,1322
+    | Node3 Node31322,1323
+foldNode foldNode1335,1336
+instance Foldable Foldable Node1340,1341
+    foldMap foldMap1341,1342
+    foldr foldr1343,1344
+    foldl foldl1347,1348
+    foldr' foldr'1351,1352
+    foldl' foldl'1355,1356
+instance Functor Functor Node1359,1360
+    fmap fmap1361,1362
+instance Traversable Traversable Node1364,1365
+    traverse traverse1366,1367
+instance NFData NFData a => NFData (Node a)1369,1370
+    rnf rnf1370,1371
+instance Sized Sized (Node a)1373,1374
+    size size1374,1375
+node2 node21378,1379
+node3 node31382,1383
+nodeToDigit nodeToDigit1385,1386
+newtype Elem Elem1391,1392
+newtype Elem a  =  Elem { getElem getElem1391,1392
+instance Sized Sized (Elem a)1404,1405
+    size size1405,1406
+instance Functor Functor Elem1407,1408
+    fmap fmap1410,1411
+instance Foldable Foldable Elem1415,1416
+    foldr foldr1416,1417
+    foldMap foldMap1418,1419
+    foldl foldl1419,1420
+    foldl' foldl'1420,1421
+    foldMap foldMap1422,1423
+    foldl foldl1423,1424
+    foldl' foldl'1424,1425
+instance Traversable Traversable Elem1427,1428
+    traverse traverse1428,1429
+instance NFData NFData a => NFData (Elem a)1430,1431
+    rnf rnf1431,1432
+newtype Identity Identity1437,1438
+newtype Identity a = Identity {runIdentity runIdentity1437,1438
+instance Functor Functor Identity1439,1440
+    fmap fmap1440,1441
+instance Applicative Applicative Identity1442,1443
+    pure pure1443,1444
+    Identity Identity1444,1445
+applicativeTree applicativeTree1456,1457
+data RCountMid RCountMid1482,1483
+data RCountMid a = RCountMidRCountMid1482,1483
+beforeSeq beforeSeq1500,1501
+replicateEach replicateEach1507,1508
+replicateEach replicateEach1517,1518
+rep2EachFT rep2EachFT1560,1561
+rep3EachFT rep3EachFT1567,1568
+repEachMiddle repEachMiddle1600,1601
+data TwoOrThree TwoOrThree1714,1715
+data TwoOrThree = TOT2 TOT21714,1715
+data TwoOrThree = TOT2 | TOT3TOT31714,1715
+empty empty1721,1722
+singleton singleton1725,1726
+replicate replicate1729,1730
+replicateA replicateA1738,1739
+replicateM replicateM1755,1756
+replicateM replicateM1763,1764
+cycleTaking cycleTaking1779,1780
+cycleNTimes cycleNTimes1789,1790
+cycleNMiddle cycleNMiddle1819,1820
+(<(<|)1848,1849
+x x1849,1850
+consTree consTree1853,1854
+cons' cons'1869,1870
+snoc' snoc'1872,1873
+consTree' consTree'1877,1878
+(|(|>)1897,1898
+Seq Seq1898,1899
+snocTree snocTree1902,1903
+snocTree' snocTree'1917,1918
+(>(><)1933,1934
+Seq Seq1934,1935
+appendTree0 appendTree01938,1939
+addDigits0 addDigits01951,1952
+appendTree1 appendTree11985,1986
+addDigits1 addDigits11998,1999
+appendTree2 appendTree22032,2033
+addDigits2 addDigits22045,2046
+appendTree3 appendTree32079,2080
+addDigits3 addDigits32092,2093
+appendTree4 appendTree42126,2127
+addDigits4 addDigits42139,2140
+unfoldr unfoldr2176,2177
+unfoldl unfoldl2182,2183
+iterateN iterateN2190,2191
+null null2200,2201
+length length2205,2206
+data ViewLTree ViewLTree2210,2211
+data ViewLTree a = ConsLTree ConsLTree2210,2211
+data ViewLTree a = ConsLTree a (FingerTree a) | EmptyLTreeEmptyLTree2210,2211
+data ViewRTree ViewRTree2211,2212
+data ViewRTree a = SnocRTree SnocRTree2211,2212
+data ViewRTree a = SnocRTree (FingerTree a) a | EmptyRTreeEmptyRTree2211,2212
+data ViewL ViewL2214,2215
+    = EmptyL EmptyL2215,2216
+    | a a2216,2217
+instance Functor Functor ViewL2231,2232
+    fmap fmap2233,2234
+instance Foldable Foldable ViewL2236,2237
+    foldMap foldMap2237,2238
+    foldr foldr2240,2241
+    foldl foldl2243,2244
+    foldl1 foldl12246,2247
+    null null2250,2251
+    length length2253,2254
+instance Traversable Traversable ViewL2257,2258
+    traverse traverse2258,2259
+viewl viewl2262,2263
+viewLTree viewLTree2269,2270
+data ViewR ViewR2281,2282
+    = EmptyR EmptyR2282,2283
+    | Seq Seq2283,2284
+instance Functor Functor ViewR2299,2300
+    fmap fmap2301,2302
+instance Foldable Foldable ViewR2304,2305
+    foldMap foldMap2305,2306
+    foldr foldr2308,2309
+    foldl foldl2311,2312
+    foldr1 foldr12314,2315
+    null null2317,2318
+    length length2320,2321
+instance Traversable Traversable ViewR2324,2325
+    traverse traverse2325,2326
+viewr viewr2329,2330
+viewRTree viewRTree2336,2337
+scanl scanl2364,2365
+scanl1 scanl12374,2375
+scanr scanr2380,2381
+scanr1 scanr12388,2389
+index index2406,2407
+lookup lookup2432,2433
+(!(!?)2446,2447
+data Place Place2449,2450
+data Place a = Place Place2449,2450
+lookupTree lookupTree2456,2457
+lookupNode lookupNode2470,2471
+lookupDigit lookupDigit2486,2487
+update update2512,2513
+updateTree updateTree2524,2525
+updateNode updateNode2536,2537
+updateDigit updateDigit2550,2551
+adjust adjust2581,2582
+adjust' adjust'2600,2601
+adjustTree adjustTree2621,2622
+adjustNode adjustNode2636,2637
+adjustDigit adjustDigit2652,2653
+insertAt insertAt2688,2689
+data Ins Ins2695,2696
+data Ins a = InsOne InsOne2695,2696
+data Ins a = InsOne a | InsTwo InsTwo2695,2696
+insTree insTree2699,2700
+insNode insNode2720,2721
+data InsDigNode InsDigNode2744,2745
+data InsDigNode a = InsLeftDig InsLeftDig2744,2745
+data InsDigNode a = InsLeftDig !(Digit a) | InsDigNode InsDigNode2744,2745
+insLeftDigit insLeftDigit2747,2748
+data InsNodeDig InsNodeDig2788,2789
+data InsNodeDig a = InsRightDig InsRightDig2788,2789
+data InsNodeDig a = InsRightDig !(Digit a) | InsNodeDig InsNodeDig2788,2789
+insRightDigit insRightDigit2791,2792
+deleteAt deleteAt2841,2842
+delTreeE delTreeE2846,2847
+delNodeE delNodeE2858,2859
+delLeftDigitE delLeftDigitE2868,2869
+delRightDigitE delRightDigitE2883,2884
+data DelTree DelTree2898,2899
+data DelTree a = FullTree FullTree2898,2899
+data DelTree a = FullTree !(FingerTree (Node a)) | DefectTree DefectTree2898,2899
+delTree delTree2902,2903
+data Del Del2924,2925
+data Del a = Full Full2924,2925
+data Del a = Full !(Node a) | Defect Defect2924,2925
+delNode delNode2928,2929
+delRebuildRightDigit delRebuildRightDigit2967,2968
+delRebuildLeftDigit delRebuildLeftDigit2987,2988
+delRebuildLeftSide delRebuildLeftSide3005,3006
+delRebuildRightSide delRebuildRightSide3017,3018
+delRebuildMiddle delRebuildMiddle3029,3030
+data DelDig DelDig3037,3038
+data DelDig a = FullDig FullDig3037,3038
+data DelDig a = FullDig !(Digit (Node a)) | DefectDig DefectDig3037,3038
+delDigit delDigit3041,3042
+mapWithIndex mapWithIndex3113,3114
+foldWithIndexDigit foldWithIndexDigit3174,3175
+foldWithIndexNode foldWithIndexNode3191,3192
+foldMapWithIndex foldMapWithIndex3205,3206
+traverseWithIndex traverseWithIndex3261,3262
+fromFunction fromFunction3411,3412
+fromArray fromArray3456,3457
+take take3473,3474
+takeTreeE takeTreeE3481,3482
+takeTreeN takeTreeN3496,3497
+takeMiddleN takeMiddleN3508,3509
+takeMiddleE takeMiddleE3529,3530
+takePrefixE takePrefixE3547,3548
+takePrefixN takePrefixN3562,3563
+takeSuffixE takeSuffixE3587,3588
+takeSuffixN takeSuffixN3603,3604
+drop drop3635,3636
+takeTreeER takeTreeER3647,3648
+takeTreeNR takeTreeNR3662,3663
+takeMiddleNR takeMiddleNR3674,3675
+takeMiddleER takeMiddleER3695,3696
+takeSuffixER takeSuffixER3713,3714
+takeSuffixNR takeSuffixNR3728,3729
+takePrefixER takePrefixER3753,3754
+takePrefixNR takePrefixNR3769,3770
+splitAt splitAt3799,3800
+uncheckedSplitAt uncheckedSplitAt3819,3820
+data Split Split3823,3824
+data Split a = Split Split3823,3824
+splitTreeE splitTreeE3828,3829
+splitTreeN splitTreeN3843,3844
+splitMiddleN splitMiddleN3855,3856
+splitMiddleE splitMiddleE3876,3877
+splitPrefixE splitPrefixE3894,3895
+splitPrefixN splitPrefixN3910,3911
+splitSuffixE splitSuffixE3935,3936
+splitSuffixN splitSuffixN3951,3952
+chunksOf chunksOf3989,3990
+tails tails4008,4009
+inits inits4018,4019
+tailsDigit tailsDigit4059,4060
+initsDigit initsDigit4065,4066
+tailsNode tailsNode4071,4072
+initsNode initsNode4075,4076
+tailsTree tailsTree4083,4084
+initsTree initsTree4098,4099
+foldlWithIndex foldlWithIndex4112,4113
+foldrWithIndex foldrWithIndex4118,4119
+listToMaybe' listToMaybe'4123,4124
+takeWhileL takeWhileL4129,4130
+takeWhileR takeWhileR4137,4138
+dropWhileL dropWhileL4142,4143
+dropWhileR dropWhileR4149,4150
+spanl spanl4156,4157
+spanr spanr4163,4164
+breakl breakl4174,4175
+breakr breakr4179,4180
+partition partition4186,4187
+filter filter4196,4197
+elemIndexL elemIndexL4203,4204
+elemIndexR elemIndexR4208,4209
+elemIndicesL elemIndicesL4213,4214
+elemIndicesR elemIndicesR4218,4219
+findIndexL findIndexL4223,4224
+findIndexR findIndexR4228,4229
+findIndicesL findIndicesL4234,4235
+findIndicesR findIndicesR4246,4247
+fromList fromList4310,4311
+data ListFinal ListFinal4486,4487
+data ListFinal a cont = LFinal LFinal4486,4487
+data ListFinal a cont = LFinal !cont | LCons LCons4486,4487
+instance GHC.Exts.IsList GHC-Exts-IsList (Seq a)4489,4490
+    type Item Item4490,4491
+    fromList fromList4491,4492
+    fromListN fromListN4492,4493
+    toList toList4493,4494
+instance a a ~ Char => IsString (Seq a)4498,4499
+    fromString fromString4499,4500
+reverse reverse4507,4508
+fmapReverse fmapReverse4515,4516
+fmapReverseTree fmapReverseTree4533,4534
+reverseDigit reverseDigit4542,4543
+reverseNode reverseNode4548,4549
+splitMap splitMap4632,4633
+splitMap splitMap4685,4686
+splitMapTreeE splitMapTreeE4689,4690
+splitMapTreeN splitMapTreeN4699,4700
+splitMapDigit splitMapDigit4708,4709
+splitMapNode splitMapNode4724,4725
+instance MonadZip MonadZip Seq4753,4754
+  mzipWith mzipWith4754,4755
+  munzip munzip4755,4756
+unzip unzip4773,4774
+unzipWith unzipWith4792,4793
+class UnzipWith UnzipWith4841,4842
+  unzipWith' unzipWith'4842,4843
+instance UnzipWith UnzipWith Elem4846,4847
+  unzipWith' unzipWith'4848,4849
+instance UnzipWith UnzipWith Node4865,4866
+  unzipWith' unzipWith'4866,4867
+strictifyPair strictifyPair4891,4892
+instance UnzipWith UnzipWith Digit4897,4898
+  unzipWith' unzipWith'4898,4899
+instance UnzipWith UnzipWith FingerTree4920,4921
+  unzipWith' unzipWith'4921,4922
+instance UnzipWith UnzipWith Seq4934,4935
+  unzipWith' unzipWith'4935,4936
+unzipWithNodeElem unzipWithNodeElem4952,4953
+zip zip4969,4970
+zipWith zipWith4976,4977
+zipWith' zipWith'4984,4985
+zip3 zip34992,4993
+zipWith3 zipWith34998,4999
+zipWith3' zipWith3'5006,5007
+zip4 zip45011,5012
+zipWith4 zipWith45017,5018
+fromList2 fromList25029,5030
+
+./src/Data/Graph.hs,2700
+module Data.Graph Data.Graph42,43
+data SCC SCC147,148
+data SCC vertex = AcyclicSCC AcyclicSCC147,148
+                | CyclicSCC CyclicSCC149,150
+instance Eq1 Eq1 SCC175,176
+  liftEq liftEq176,177
+instance Show1 Show1 SCC180,181
+  liftShowsPrec liftShowsPrec181,182
+instance Read1 Read1 SCC184,185
+  liftReadsPrec liftReadsPrec185,186
+instance F.Foldable F-Foldable SCC191,192
+  foldr foldr192,193
+instance Traversable Traversable SCC196,197
+  traverse traverse199,200
+instance NFData NFData a => NFData (SCC a)204,205
+    rnf rnf205,206
+instance Functor Functor SCC209,210
+    fmap fmap210,211
+flattenSCCs flattenSCCs214,215
+flattenSCC flattenSCC218,219
+stronglyConnComp stronglyConnComp238,239
+stronglyConnCompR stronglyConnCompR264,265
+type Vertex Vertex284,285
+type Table Table288,289
+type Graph Graph291,292
+type Bounds Bounds293,294
+type Edge Edge295,296
+type UArray UArray298,299
+vertices vertices308,309
+edges edges318,319
+buildG buildG331,332
+transposeG transposeG339,340
+reverseE reverseE342,343
+outdegree outdegree352,353
+indegree indegree366,367
+graphFromEdges' graphFromEdges'376,377
+graphFromEdges graphFromEdges439,440
+dff dff474,475
+dfs dfs480,481
+generate generate483,484
+prune prune486,487
+chop chop489,490
+newtype SetM SetM508,509
+newtype SetM s a = SetM { runSetM runSetM508,509
+newtype SetM SetM510,511
+newtype SetM s a = SetM { runSetM runSetM510,511
+instance Monad Monad (SetM s)513,514
+    return return514,515
+    SetM SetM516,517
+instance Functor Functor (SetM s)519,520
+    f `fmap`fmap520,521
+instance Applicative Applicative (SetM s)523,524
+    pure pure524,525
+    SetM SetM526,527
+run run532,533
+contains contains535,536
+include include538,539
+newtype SetM SetM545,546
+newtype SetM s a = SetM { runSetM runSetM545,546
+instance Monad Monad (SetM s)547,548
+    return return548,549
+    SetM SetM549,550
+instance Functor Functor (SetM s)551,552
+    f `fmap`fmap552,553
+instance Applicative Applicative (SetM s)555,556
+    pure pure556,557
+    SetM SetM558,559
+run run561,562
+contains contains564,565
+include include567,568
+preorder' preorder'582,583
+preorderF' preorderF'585,586
+preorderF preorderF588,589
+tabulate tabulate591,592
+preArr preArr598,599
+postorder postorder605,606
+postorderF postorderF608,609
+postOrd postOrd611,612
+topSort topSort617,618
+reverseTopSort reverseTopSort623,624
+components components633,634
+undirected undirected636,637
+scc scc649,650
+reachable reachable691,692
+path path703,704
+bcc bcc713,714
+do_label do_label718,719
+bicomps bicomps724,725
+collect collect728,729
+
+./src/Data/Sequence.hs,44
+module Data.Sequence Data.Sequence136,137

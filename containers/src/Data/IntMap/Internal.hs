@@ -346,7 +346,7 @@ import qualified Control.Category as Category
 import Data.Coerce
 #endif
 #if MIN_VERSION_base(4,16,0)
-import GHC.Types (Total, type (@))
+import GHC.Types (type (@))
 #endif
 
 
@@ -1453,21 +1453,13 @@ data
   , missingKey :: Key -> x -> f (Maybe y)}
 
 -- | @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f) => Functor (WhenMissing f x) where
+instance (Applicative f, Monad f) => Functor (WhenMissing f x) where
   fmap = mapWhenMissing
   {-# INLINE fmap #-}
 
 
 -- | @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f) => Category.Category (WhenMissing f)
+instance (Applicative f, Monad f) => Category.Category (WhenMissing f)
   where
     id = preserveMissing
     f . g =
@@ -1483,11 +1475,7 @@ instance (
 -- | Equivalent to @ReaderT k (ReaderT x (MaybeT f))@.
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f) => Applicative (WhenMissing f x) where
+instance (Applicative f, Monad f) => Applicative (WhenMissing f x) where
   pure x = mapMissing (\ _ _ -> x)
   f <*> g =
     traverseMaybeMissing $ \k x -> do
@@ -1502,12 +1490,8 @@ instance (
 -- | Equivalent to @ReaderT k (ReaderT x (MaybeT f))@.
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f) => Monad (WhenMissing f x) where
-#if !MIN_VERSION_base(4,8,0)
+instance (Applicative f, Monad f) => Monad (WhenMissing f x) where
+#if !MIN_VERSION_base(4,8,0) || MIN_VERSION_base(4,16,0)
   return = pure
 #endif
   m >>= f =
@@ -1522,15 +1506,10 @@ instance (
 -- | Map covariantly over a @'WhenMissing' f x@.
 --
 -- @since 0.5.9
-mapWhenMissing
-  :: (
-#if MIN_VERSION_base(4,16,0)
-      Total f, 
-#endif
-      Applicative f, Monad f)
-  => (a -> b)
-  -> WhenMissing f x a
-  -> WhenMissing f x b
+mapWhenMissing :: (Applicative f, Monad f)
+               => (a -> b)
+               -> WhenMissing f x a
+               -> WhenMissing f x b
 mapWhenMissing f t = WhenMissing
   { missingSubtree = \m -> missingSubtree t m >>= \m' -> pure $! fmap f m'
   , missingKey     = \k x -> missingKey t k x >>= \q -> (pure $! fmap f q) }
@@ -1553,11 +1532,7 @@ mapGentlyWhenMissing f t = WhenMissing
 -- | Map covariantly over a @'WhenMatched' f k x@, using only a
 -- 'Functor f' constraint.
 mapGentlyWhenMatched
-  :: (
--- #if MIN_VERSION_base(4,16,0)
---     f @ Maybe b, f @ Maybe a,
--- #endif   
-    Functor f)
+  :: (Functor f)
   => (a -> b)
   -> WhenMatched f x y a
   -> WhenMatched f x y b
@@ -1580,11 +1555,7 @@ lmapWhenMissing f t = WhenMissing
 --
 -- @since 0.5.9
 contramapFirstWhenMatched
-  ::
--- #if MIN_VERSION_base(4,16,0)
---      f @ Maybe z => 
--- #endif
-  (b -> a)
+  :: (b -> a)
   -> WhenMatched f a y z
   -> WhenMatched f b y z
 contramapFirstWhenMatched f t =
@@ -1596,11 +1567,7 @@ contramapFirstWhenMatched f t =
 --
 -- @since 0.5.9
 contramapSecondWhenMatched
-  ::
-#if MIN_VERSION_base(4,16,0)
-     f @ Maybe z => 
-#endif
-    (b -> a)
+  :: (b -> a)
   -> WhenMatched f x a z
   -> WhenMatched f x b z
 contramapSecondWhenMatched f t =
@@ -1669,11 +1636,7 @@ instance Functor f => Functor (WhenMatched f x y) where
 
 
 -- | @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Monad f, Applicative f) => Category.Category (WhenMatched f x)
+instance (Monad f, Applicative f) => Category.Category (WhenMatched f x)
   where
     id = zipWithMatched (\_ _ y -> y)
     f . g =
@@ -1689,11 +1652,7 @@ instance (
 -- | Equivalent to @ReaderT Key (ReaderT x (ReaderT y (MaybeT f)))@
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Monad f, Applicative f) => Applicative (WhenMatched f x y) where
+instance (Monad f, Applicative f) => Applicative (WhenMatched f x y) where
   pure x = zipWithMatched (\_ _ _ -> x)
   fs <*> xs =
     zipWithMaybeAMatched $ \k x y -> do
@@ -1708,12 +1667,8 @@ instance (
 -- | Equivalent to @ReaderT Key (ReaderT x (ReaderT y (MaybeT f)))@
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Monad f, Applicative f) => Monad (WhenMatched f x y) where
-#if !MIN_VERSION_base(4,8,0)
+instance (Monad f, Applicative f) => Monad (WhenMatched f x y) where
+#if !MIN_VERSION_base(4,8,0) || MIN_VERSION_base(4,16,0)
   return = pure
 #endif
   m >>= f =
@@ -1729,11 +1684,7 @@ instance (
 --
 -- @since 0.5.9
 mapWhenMatched
-  :: (
-#if MIN_VERSION_base(4,16,0)
-     f @ Maybe a, f @ Maybe b,
-#endif
-    Functor f)
+  :: (Functor f)
   => (a -> b)
   -> WhenMatched f x y a
   -> WhenMatched f x y b
@@ -1760,11 +1711,7 @@ type SimpleWhenMatched = WhenMatched Identity
 --
 -- @since 0.5.9
 zipWithMatched
-  :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f,
-#endif
-     Applicative f)
+  :: (Applicative f)
   => (Key -> x -> y -> z)
   -> WhenMatched f x y z
 zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
@@ -1777,11 +1724,7 @@ zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
 --
 -- @since 0.5.9
 zipWithAMatched
-  :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f,
-#endif
-     Applicative f)
+  :: (Applicative f)
   => (Key -> x -> y -> f z)
   -> WhenMatched f x y z
 zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
@@ -1797,11 +1740,7 @@ zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
 --
 -- @since 0.5.9
 zipWithMaybeMatched
-  :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f,
-#endif
-    Applicative f)
+  :: (Applicative f)
   => (Key -> x -> y -> Maybe z)
   -> WhenMatched f x y z
 zipWithMaybeMatched f = WhenMatched $ \ k x y -> pure $ f k x y

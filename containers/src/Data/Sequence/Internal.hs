@@ -263,11 +263,6 @@ import Data.Functor.Identity (Identity(..))
 import Data.Word (Word)
 #endif
 
-
-#if MIN_VERSION_base(4,16,0)
-import GHC.Types (Total)
-#endif
-
 import Utils.Containers.Internal.StrictPair (StrictPair (..), toPair)
 import Control.Monad.Zip (MonadZip (..))
 import Control.Monad.Fix (MonadFix (..), fix)
@@ -437,11 +432,7 @@ instance Traversable Seq where
             (traverseDigitE f' sf')
       where
         traverseTree
-            :: (
-#if MIN_VERSION_base(4,16,0)
-                Total f, 
-#endif
-                Applicative f)
+            :: (Applicative f)
             => (Node a -> f (Node b))
             -> FingerTree (Node a)
             -> f (FingerTree (Node b))
@@ -454,11 +445,7 @@ instance Traversable Seq where
                 (traverseTree (traverseNodeN f) m)
                 (traverseDigitN f sf)
         traverseDigitE
-            :: (
-#if MIN_VERSION_base(4,16,0)
-                Total f, 
-#endif
-                Applicative f)
+            :: (Applicative f)
             => (a -> f b) -> Digit (Elem a) -> f (Digit (Elem b))
         traverseDigitE f (One (Elem a)) =
             (\a' -> One (Elem a')) <$>
@@ -482,19 +469,11 @@ instance Traversable Seq where
                 (f b)
                 (f c) <*> 
                 (f d)
-        traverseDigitN :: (
-#if MIN_VERSION_base(4,16,0)
-               Total f, 
-#endif
-                Applicative f)
+        traverseDigitN :: (Applicative f)
             => (Node a -> f (Node b)) -> Digit (Node a) -> f (Digit (Node b))
         traverseDigitN f t = traverse f t
         traverseNodeE
-            :: (
-#if MIN_VERSION_base(4,16,0)
-                Total f, 
-#endif
-                Applicative f)
+            :: (Applicative f)
             => (a -> f b) -> Node (Elem a) -> f (Node (Elem b))
         traverseNodeE f (Node2 s (Elem a) (Elem b)) =
             liftA2
@@ -509,11 +488,7 @@ instance Traversable Seq where
                 (f b)
                 (f c)
         traverseNodeN
-            :: (
-#if MIN_VERSION_base(4,16,0)
-                Total f, 
-#endif
-                Applicative f)
+            :: (Applicative f)
             => (Node a -> f (Node b)) -> Node (Node a) -> f (Node (Node b))
         traverseNodeN f t = traverse f t
 
@@ -1454,11 +1429,7 @@ instance Applicative Identity where
 {-# SPECIALIZE applicativeTree :: Int -> Int -> Identity a -> Identity (FingerTree a) #-}
 -- Special note: the Identity specialization automatically does node sharing,
 -- reducing memory usage of the resulting tree to /O(log n)/.
-applicativeTree :: (
-#if MIN_VERSION_base(4,16,0)
-                     Total f, 
-#endif
-                     Applicative f) => Int -> Int -> f a -> f (FingerTree a)
+applicativeTree :: (Applicative f) => Int -> Int -> f a -> f (FingerTree a)
 applicativeTree n !mSize m = case n of
     0 -> pure EmptyT
     1 -> fmap Single m
@@ -1736,11 +1707,7 @@ replicate n x
 -- \( O(\log n) \) calls to 'liftA2' and 'pure'.
 --
 -- > replicateA n x = sequenceA (replicate n x)
-replicateA :: (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f) => Int -> f a -> f (Seq a)
+replicateA :: (Applicative f) => Int -> f a -> f (Seq a)
 replicateA n x
   | n >= 0      = Seq <$> applicativeTree n 1 (Elem <$> x)
   | otherwise   = error "replicateA takes a nonnegative integer argument"
@@ -1753,11 +1720,7 @@ replicateA n x
 -- For @base >= 4.8.0@ and @containers >= 0.5.11@, 'replicateM'
 -- is a synonym for 'replicateA'.
 #if MIN_VERSION_base(4,8,0)
-replicateM :: (
-#if MIN_VERSION_base(4,16,0)
-  Total m, 
-#endif
-  Applicative m) => Int -> m a -> m (Seq a)
+replicateM :: (Applicative m) => Int -> m a -> m (Seq a)
 replicateM = replicateA
 #else
 replicateM :: Monad m => Int -> m a -> m (Seq a)
@@ -3259,23 +3222,15 @@ foldMapWithIndex f' (Seq xs') = foldMapWithIndexTreeE (lift_elem f') 0 xs'
 -- access to the index of each element.
 --
 -- @since 0.5.8
-traverseWithIndex :: (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f
-  ) => (Int -> a -> f b) -> Seq a -> f (Seq b)
+traverseWithIndex :: Applicative f
+                  => (Int -> a -> f b) -> Seq a -> f (Seq b)
 traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> Elem <$> f' s a) 0 xs'
  where
 -- We have to specialize these functions by hand, unfortunately, because
 -- GHC does not specialize until *all* instances are determined.
 -- Although the Sized instance is known at compile time, the Applicative
 -- instance generally is not.
-  traverseWithIndexTreeE :: (
-#if MIN_VERSION_base(4,16,0)
-    Total f, 
-#endif
-    Applicative f) => (Int -> Elem a -> f b) -> Int -> FingerTree (Elem a) -> f (FingerTree b)
+  traverseWithIndexTreeE :: (Applicative f) => (Int -> Elem a -> f b) -> Int -> FingerTree (Elem a) -> f (FingerTree b)
   traverseWithIndexTreeE _ !_s EmptyT = pure EmptyT
   traverseWithIndexTreeE f s (Single xs) = Single <$> f s xs
   traverseWithIndexTreeE f s (Deep n pr m sf) =
@@ -3287,11 +3242,7 @@ traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> 
       !sPspr = s + size pr
       !sPsprm = sPspr + size m
 
-  traverseWithIndexTreeN :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f, 
-#endif
-     Applicative f) => (Int -> Node a -> f b) -> Int -> FingerTree (Node a) -> f (FingerTree b)
+  traverseWithIndexTreeN :: (Applicative f) => (Int -> Node a -> f b) -> Int -> FingerTree (Node a) -> f (FingerTree b)
   traverseWithIndexTreeN _ !_s EmptyT = pure EmptyT
   traverseWithIndexTreeN f s (Single xs) = Single <$> f s xs
   traverseWithIndexTreeN f s (Deep n pr m sf) =
@@ -3303,26 +3254,14 @@ traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> 
       !sPspr = s + size pr
       !sPsprm = sPspr + size m
 
-  traverseWithIndexDigitE :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f, 
-#endif
-     Applicative f) => (Int -> Elem a -> f b) -> Int -> Digit (Elem a) -> f (Digit b)
+  traverseWithIndexDigitE :: (Applicative f) => (Int -> Elem a -> f b) -> Int -> Digit (Elem a) -> f (Digit b)
   traverseWithIndexDigitE f i t = traverseWithIndexDigit f i t
 
-  traverseWithIndexDigitN :: (
-#if MIN_VERSION_base(4,16,0)
-    Total f, 
-#endif
-    Applicative f) => (Int -> Node a -> f b) -> Int -> Digit (Node a) -> f (Digit b)
+  traverseWithIndexDigitN :: (Applicative f) => (Int -> Node a -> f b) -> Int -> Digit (Node a) -> f (Digit b)
   traverseWithIndexDigitN f i t = traverseWithIndexDigit f i t
 
   {-# INLINE traverseWithIndexDigit #-}
-  traverseWithIndexDigit :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f, 
-#endif
-     Applicative f, Sized a) => (Int -> a -> f b) -> Int -> Digit a -> f (Digit b)
+  traverseWithIndexDigit :: (Applicative f, Sized a) => (Int -> a -> f b) -> Int -> Digit a -> f (Digit b)
   traverseWithIndexDigit f !s (One a) = One <$> f s a
   traverseWithIndexDigit f s (Two a b) = liftA2 Two (f s a) (f sPsa b)
     where
@@ -3339,26 +3278,14 @@ traverseWithIndex f' (Seq xs') = Seq <$> traverseWithIndexTreeE (\s (Elem a) -> 
       !sPsab = sPsa + size b
       !sPsabc = sPsab + size c
 
-  traverseWithIndexNodeE :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f, 
-#endif
-    Applicative f) => (Int -> Elem a -> f b) -> Int -> Node (Elem a) -> f (Node b)
+  traverseWithIndexNodeE :: (Applicative f) => (Int -> Elem a -> f b) -> Int -> Node (Elem a) -> f (Node b)
   traverseWithIndexNodeE f i t = traverseWithIndexNode f i t
 
-  traverseWithIndexNodeN :: (
-#if MIN_VERSION_base(4,16,0)
-                             Total f, 
-#endif
-                             Applicative f) => (Int -> Node a -> f b) -> Int -> Node (Node a) -> f (Node b)
+  traverseWithIndexNodeN :: (Applicative f) => (Int -> Node a -> f b) -> Int -> Node (Node a) -> f (Node b)
   traverseWithIndexNodeN f i t = traverseWithIndexNode f i t
 
   {-# INLINE traverseWithIndexNode #-}
-  traverseWithIndexNode :: (
-#if MIN_VERSION_base(4,16,0)
-     Total f, 
-#endif
-    Applicative f, Sized a) => (Int -> a -> f b) -> Int -> Node a -> f (Node b)
+  traverseWithIndexNode :: (Applicative f, Sized a) => (Int -> a -> f b) -> Int -> Node a -> f (Node b)
   traverseWithIndexNode f !s (Node2 ns a b) = liftA2 (Node2 ns) (f s a) (f sPsa b)
     where
       !sPsa = s + size a

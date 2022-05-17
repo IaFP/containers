@@ -94,7 +94,7 @@ import Data.Semigroup (Semigroup (..))
 import Data.Functor ((<$))
 #endif
 #if MIN_VERSION_base(4,14,0)
-import GHC.Types (type (@), Total)
+import GHC.Types (type (@))
 #endif
 
 -- | Non-empty, possibly infinite, multi-way trees; also known as /rose trees/.
@@ -391,22 +391,14 @@ unfoldForest :: (b -> (a, [b])) -> [b] -> [Tree a]
 unfoldForest f = map (unfoldTree f)
 
 -- | Monadic tree builder, in depth-first order.
-unfoldTreeM :: (
-#if MIN_VERSION_base(4,14,0)
-                Total m,
-#endif
-                Monad m) => (b -> m (a, [b])) -> b -> m (Tree a)
+unfoldTreeM :: (Applicative m, Monad m) => (b -> m (a, [b])) -> b -> m (Tree a)
 unfoldTreeM f b = do
     (a, bs) <- f b
     ts <- unfoldForestM f bs
     return (Node a ts)
 
 -- | Monadic forest builder, in depth-first order
-unfoldForestM :: (
-#if MIN_VERSION_base(4,14,0)
-                  Total m,
-#endif
-                  Monad m)
+unfoldForestM :: (Applicative m, Monad m)
               => (b -> m (a, [b])) -> [b] -> m ([Tree a])
 unfoldForestM f = Prelude.mapM (unfoldTreeM f)
 

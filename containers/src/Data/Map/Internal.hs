@@ -434,7 +434,7 @@ import Data.Coerce
 #endif
 
 #if MIN_VERSION_base(4,16,0)
-import GHC.Types (Total, type (@))
+import GHC.Types (type (@))
 #endif
 
 {--------------------------------------------------------------------
@@ -2160,20 +2160,12 @@ data
   , missingKey :: k -> x -> f (Maybe y)}
 
 -- | @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f) => Functor (WhenMissing f k x) where
+instance (Applicative f, Monad f) => Functor (WhenMissing f k x) where
   fmap = mapWhenMissing
   {-# INLINE fmap #-}
 
 -- | @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f)
+instance (Applicative f, Monad f)
          => Category.Category (WhenMissing f k) where
   id = preserveMissing
   f . g = traverseMaybeMissing $
@@ -2187,11 +2179,7 @@ instance (
 -- | Equivalent to @ ReaderT k (ReaderT x (MaybeT f)) @.
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f) => Applicative (WhenMissing f k x) where
+instance (Applicative f, Monad f) => Applicative (WhenMissing f k x) where
   pure x = mapMissing (\ _ _ -> x)
   f <*> g = traverseMaybeMissing $ \k x -> do
          res1 <- missingKey f k x
@@ -2204,12 +2192,8 @@ instance (
 -- | Equivalent to @ ReaderT k (ReaderT x (MaybeT f)) @.
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f) => Monad (WhenMissing f k x) where
-#if !MIN_VERSION_base(4,8,0)
+instance (Applicative f, Monad f) => Monad (WhenMissing f k x) where
+#if !MIN_VERSION_base(4,8,0) || MIN_VERSION_base(4,16,0)
   return = pure
 #endif
   m >>= f = traverseMaybeMissing $ \k x -> do
@@ -2222,11 +2206,7 @@ instance (
 -- | Map covariantly over a @'WhenMissing' f k x@.
 --
 -- @since 0.5.9
-mapWhenMissing :: (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f, Monad f)
+mapWhenMissing :: (Applicative f, Monad f)
                => (a -> b)
                -> WhenMissing f k x a -> WhenMissing f k x b
 mapWhenMissing f t = WhenMissing
@@ -2246,13 +2226,9 @@ mapGentlyWhenMissing f t = WhenMissing
 
 -- | Map covariantly over a @'WhenMatched' f k x@, using only a 'Functor f'
 -- constraint.
-mapGentlyWhenMatched :: (
-#if MIN_VERSION_base(4,16,0)
-    f @ Maybe b, f @ Maybe a, 
-#endif
-  Functor f)
-               => (a -> b)
-               -> WhenMatched f k x y a -> WhenMatched f k x y b
+mapGentlyWhenMatched :: (Functor f)
+                     => (a -> b)
+                     -> WhenMatched f k x y a -> WhenMatched f k x y b
 mapGentlyWhenMatched f t = zipWithMaybeAMatched $
   \k x y -> fmap f <$> runWhenMatched t k x y
 {-# INLINE mapGentlyWhenMatched #-}
@@ -2269,11 +2245,7 @@ lmapWhenMissing f t = WhenMissing
 -- | Map contravariantly over a @'WhenMatched' f k _ y z@.
 --
 -- @since 0.5.9
-contramapFirstWhenMatched ::
-#if MIN_VERSION_base(4,16,0)
-    f @ Maybe z => 
-#endif
-  (b -> a)
+contramapFirstWhenMatched :: (b -> a)
                           -> WhenMatched f k a y z
                           -> WhenMatched f k b y z
 contramapFirstWhenMatched f t = WhenMatched $
@@ -2283,11 +2255,7 @@ contramapFirstWhenMatched f t = WhenMatched $
 -- | Map contravariantly over a @'WhenMatched' f k x _ z@.
 --
 -- @since 0.5.9
-contramapSecondWhenMatched ::
-#if MIN_VERSION_base(4,16,0)
-         f @ Maybe z =>  
-#endif
-  (b -> a)
+contramapSecondWhenMatched ::(b -> a)
                            -> WhenMatched f k x a z
                            -> WhenMatched f k x b z
 contramapSecondWhenMatched f t = WhenMatched $
@@ -2339,11 +2307,7 @@ instance Functor f => Functor (WhenMatched f k x y) where
   {-# INLINE fmap #-}
 
 -- | @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Monad f, Applicative f) => Category.Category (WhenMatched f k x) where
+instance (Monad f, Applicative f) => Category.Category (WhenMatched f k x) where
   id = zipWithMatched (\_ _ y -> y)
   f . g = zipWithMaybeAMatched $
             \k x y -> do
@@ -2357,11 +2321,7 @@ instance (
 -- | Equivalent to @ ReaderT k (ReaderT x (ReaderT y (MaybeT f))) @
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Monad f, Applicative f) => Applicative (WhenMatched f k x y) where
+instance (Monad f, Applicative f) => Applicative (WhenMatched f k x y) where
   pure x = zipWithMatched (\_ _ _ -> x)
   fs <*> xs = zipWithMaybeAMatched $ \k x y -> do
     res <- runWhenMatched fs k x y
@@ -2374,12 +2334,8 @@ instance (
 -- | Equivalent to @ ReaderT k (ReaderT x (ReaderT y (MaybeT f))) @
 --
 -- @since 0.5.9
-instance (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Monad f, Applicative f) => Monad (WhenMatched f k x y) where
-#if !MIN_VERSION_base(4,8,0)
+instance (Monad f, Applicative f) => Monad (WhenMatched f k x y) where
+#if !MIN_VERSION_base(4,8,0) || MIN_VERSION_base(4,16,0)
   return = pure
 #endif
   m >>= f = zipWithMaybeAMatched $ \k x y -> do
@@ -2420,11 +2376,7 @@ type SimpleWhenMatched = WhenMatched Identity
 -- @
 --
 -- @since 0.5.9
-zipWithMatched :: (
-#if MIN_VERSION_base(4,16,0)
-           Total f, 
-#endif
-           Applicative f)
+zipWithMatched :: (Applicative f)
                => (k -> x -> y -> z)
                -> WhenMatched f k x y z
 zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
@@ -2434,11 +2386,7 @@ zipWithMatched f = WhenMatched $ \ k x y -> pure . Just $ f k x y
 -- key and values to produce an action and use its result in the merged map.
 --
 -- @since 0.5.9
-zipWithAMatched :: (
-#if MIN_VERSION_base(4,16,0)
-           Total f, 
-#endif
-           Applicative f)
+zipWithAMatched :: (Applicative f)
                 => (k -> x -> y -> f z)
                 -> WhenMatched f k x y z
 zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
@@ -2453,11 +2401,7 @@ zipWithAMatched f = WhenMatched $ \ k x y -> Just <$> f k x y
 -- @
 --
 -- @since 0.5.9
-zipWithMaybeMatched :: (
-#if MIN_VERSION_base(4,16,0)
-           Total f, 
-#endif
-                   Applicative f)
+zipWithMaybeMatched :: (Applicative f)
                     => (k -> x -> y -> Maybe z)
                     -> WhenMatched f k x y z
 zipWithMaybeMatched f = WhenMatched $ \ k x y -> pure $ f k x y
@@ -2599,11 +2543,7 @@ filterMissing f = WhenMissing
 -- but this should be a little faster.
 --
 -- @since 0.5.9
-filterAMissing :: (
-#if MIN_VERSION_base(4,16,0)
-                   Total f, 
-#endif
-                   Applicative f)
+filterAMissing :: (Applicative f)
                => (k -> x -> f Bool) -> WhenMissing f k x x
 filterAMissing f = WhenMissing
   { missingSubtree = \m -> filterWithKeyA f m
@@ -2618,11 +2558,7 @@ bool _ t True  = t
 -- | Traverse over the entries whose keys are missing from the other map.
 --
 -- @since 0.5.9
-traverseMissing :: (
-#if MIN_VERSION_base(4,16,0)
-                    Total f, 
-#endif
-                    Applicative f)
+traverseMissing :: (Applicative f)
                 => (k -> x -> f y) -> WhenMissing f k x y
 traverseMissing f = WhenMissing
   { missingSubtree = traverseWithKey f
@@ -2635,11 +2571,7 @@ traverseMissing f = WhenMissing
 -- more efficient.
 --
 -- @since 0.5.9
-traverseMaybeMissing :: (
-#if MIN_VERSION_base(4,16,0)
-                         Total f, 
-#endif
-                         Applicative f)
+traverseMaybeMissing :: (Applicative f)
                      => (k -> x -> f (Maybe y)) -> WhenMissing f k x y
 traverseMaybeMissing f = WhenMissing
   { missingSubtree = traverseMaybeWithKey f
@@ -2791,11 +2723,7 @@ merge g1 g2 f m1 m2 = runIdentity $
 --
 -- @since 0.5.9
 mergeA
-  :: (
-#if MIN_VERSION_base(4,16,0)
-      Total f, 
-#endif
-      Applicative f, Ord k)
+  :: (Applicative f, Ord k)
   => WhenMissing f k a c -- ^ What to do with keys in @m1@ but not @m2@
   -> WhenMissing f k b c -- ^ What to do with keys in @m2@ but not @m1@
   -> WhenMatched f k a b c -- ^ What to do with keys in both @m1@ and @m2@
@@ -3006,11 +2934,7 @@ filterWithKey p t@(Bin _ kx x l r)
 
 -- | /O(n)/. Filter keys and values using an 'Applicative'
 -- predicate.
-filterWithKeyA :: (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f) => (k -> a -> f Bool) -> Map k a -> f (Map k a)
+filterWithKeyA :: (Applicative f) => (k -> a -> f Bool) -> Map k a -> f (Map k a)
 filterWithKeyA _ Tip = pure Tip
 filterWithKeyA p t@(Bin _ kx x l r) =
   liftA3 combine (p kx x) (filterWithKeyA p l) (filterWithKeyA p r)
@@ -3136,11 +3060,7 @@ mapMaybeWithKey f (Bin _ kx x l r) = case f kx x of
 -- | /O(n)/. Traverse keys\/values and collect the 'Just' results.
 --
 -- @since 0.5.8
-traverseMaybeWithKey :: (
-#if MIN_VERSION_base(4,16,0)
-  Total f, 
-#endif
-  Applicative f) => (k -> a -> f (Maybe b)) -> Map k a -> f (Map k b)
+traverseMaybeWithKey :: (Applicative f) => (k -> a -> f (Maybe b)) -> Map k a -> f (Map k b)
 traverseMaybeWithKey = go
   where
     go _ Tip = pure Tip
@@ -3240,11 +3160,7 @@ mapWithKey f (Bin sx kx x l r) = Bin sx kx (f kx x) (mapWithKey f l) (mapWithKey
 --
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(1, 'a'), (5, 'e')]) == Just (fromList [(1, 'b'), (5, 'f')])
 -- > traverseWithKey (\k v -> if odd k then Just (succ v) else Nothing) (fromList [(2, 'c')])           == Nothing
-traverseWithKey :: (
-#if MIN_VERSION_base(4,16,0)
-  Total t, 
-#endif
-  Applicative t) => (k -> a -> t b) -> Map k a -> t (Map k b)
+traverseWithKey :: (Applicative t) => (k -> a -> t b) -> Map k a -> t (Map k b)
 traverseWithKey f = go
   where
     go Tip = pure Tip
